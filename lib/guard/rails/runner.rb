@@ -38,7 +38,7 @@ module Guard
       command = build_cli_command if options[:CLI]
       command ||= build_zeus_command if options[:zeus]
       command ||= build_rails_command
-      "sh -c 'cd #{@root} && #{command} &'"
+      "sh -c 'cd \"#{@root}\" && #{command} &'"
     end
 
     def pid_file
@@ -61,7 +61,7 @@ module Guard
         options[:daemon] ? '-d' : nil,
         options[:debugger] ? '-u' : nil,
         '-e', options[:environment],
-        '--pid', pid_file,
+        '--pid', "\"#{pid_file}\"",
         '-p', options[:port],
         options[:server],
       ]
@@ -70,7 +70,7 @@ module Guard
     end
 
     def build_cli_command
-      "#{options[:CLI]} --pid #{pid_file}"
+      "#{options[:CLI]} --pid \"#{pid_file}\""
     end
 
     def build_zeus_command

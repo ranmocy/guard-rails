@@ -60,7 +60,7 @@ describe Guard::RailsRunner do
       let(:options) { default_options.merge(:CLI => custom_cli, :pid_file => custom_pid_file) }
       it "should use custom pid_file" do
         pid_file_path = File.expand_path custom_pid_file
-        runner.build_command.should match(%r{#{custom_cli} --pid #{pid_file_path}})
+        runner.build_command.should match(%r{#{custom_cli} --pid \"#{pid_file_path}\"})
       end
     end
 
@@ -109,7 +109,7 @@ describe Guard::RailsRunner do
     context "no pid_file" do
       it "should use default pid_file" do
         pid_file_path = File.expand_path "tmp/pids/development.pid"
-        runner.build_command.should match(%r{ --pid #{pid_file_path}})
+        runner.build_command.should match(%r{ --pid \"#{pid_file_path}\"})
       end
     end
 
@@ -119,7 +119,7 @@ describe Guard::RailsRunner do
 
       it "should use custom pid_file" do
         pid_file_path = File.expand_path custom_pid_file
-        runner.build_command.should match(%r{ --pid #{pid_file_path}})
+        runner.build_command.should match(%r{ --pid \"#{pid_file_path}\"})
       end
     end
 
@@ -159,7 +159,7 @@ describe Guard::RailsRunner do
       let(:options) { default_options.merge(:root => 'spec/dummy') }
 
       it "should have a cd with the custom rails root" do
-        runner.build_command.should match(%r{cd .*/spec/dummy &&})
+        runner.build_command.should match(%r{cd .*/spec/dummy\" &&})
       end
     end
   end
