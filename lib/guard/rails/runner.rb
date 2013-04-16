@@ -41,6 +41,16 @@ module Guard
       "sh -c 'cd \"#{@root}\" && #{command} &'"
     end
 
+    def environment
+      rails_env = if options[:zeus]
+                    nil
+                  else
+                    options[:environment]
+                  end
+
+      { "RAILS_ENV" => rails_env }
+    end
+
     def pid_file
       File.expand_path(options[:pid_file] || File.join(@root, "tmp/pids/#{options[:environment]}.pid"))
     end
@@ -78,19 +88,15 @@ module Guard
         options[:zeus_plan] || 'server',
       ]
 
-      # To avoid warning of Zeus
-      # Since setup RAILS_ENV is useless for Zeus
-      ENV['RAILS_ENV'] = nil
       "zeus #{zeus_options.join(' ')} #{build_options}"
     end
 
     def build_rails_command
-      ENV['RAILS_ENV'] = options[:environment] if options[:environment]
       "rails server #{build_options}"
     end
 
     def run_rails_command!
-      system build_command
+      system environment, build_command
     end
 
     def has_pid?

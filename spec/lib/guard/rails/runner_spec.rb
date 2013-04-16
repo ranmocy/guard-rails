@@ -164,6 +164,28 @@ describe Guard::RailsRunner do
     end
   end
 
+  describe '#environment' do
+    it "defaults RAILS_ENV to development" do
+      runner.environment["RAILS_ENV"].should == "development"
+    end
+
+    context "with options[:environment]" do
+      let(:options) { default_options.merge(:environment => 'bob') }
+
+      it "defaults RAILS_ENV to nil" do
+        runner.environment["RAILS_ENV"].should == "bob"
+      end
+
+      context "zeus enabled" do
+        let(:options) { default_options.merge(:zeus => true) }
+
+        it "should set RAILS_ENV to nil" do
+          runner.environment["RAILS_ENV"].should be_nil
+        end
+      end
+    end
+  end
+
   describe '#start' do
     let(:kill_expectation) { runner.expects(:kill_unmanaged_pid!) }
     let(:pid_stub) { runner.stubs(:has_pid?) }
