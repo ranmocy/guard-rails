@@ -96,7 +96,7 @@ module Guard
     end
 
     def run_rails_command!
-      system environment, build_command
+      system "#{environment.collect {|k,v| "#{k}=#{v} "}.join} #{build_command}"
     end
 
     def has_pid?
