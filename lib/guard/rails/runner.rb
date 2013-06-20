@@ -24,7 +24,7 @@ module Guard
         wait_for_no_pid if $?.exitstatus == 0
 
         # If you lost your pid_file, you are already died.
-        system "kill -KILL #{pid} >&2 2>/dev/null"
+        system "kill -KILL #{pid} >&2 2>#{::Guard::DEV_NULL}"
         FileUtils.rm pid_file, :force => true
       end
     end
@@ -38,7 +38,7 @@ module Guard
       command = build_cli_command if options[:CLI]
       command ||= build_zeus_command if options[:zeus]
       command ||= build_rails_command
-      "sh -c 'cd \"#{@root}\" && #{command} &'"
+      "#{environment.collect {|k,v| "#{k}=#{v} "}.join} cd \"#{@root}\" && #{command}"
     end
 
     def environment
@@ -96,7 +96,7 @@ module Guard
     end
 
     def run_rails_command!
-      system "#{environment.collect {|k,v| "#{k}=#{v} "}.join} #{build_command}"
+      system "sh -c 'cd \"#{@root}\" && #{build_command} &'"
     end
 
     def has_pid?
