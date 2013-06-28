@@ -19,12 +19,12 @@ module Guard
 
     def stop
       if File.file?(pid_file)
-        pid = File.read(pid_file).strip
-        system "kill -SIGINT #{pid}"
-        wait_for_no_pid if $?.exitstatus == 0
+        pid = File.read(pid_file).strip.to_i
+        sig_sent = kill_process("INT", pid)
+        wait_for_no_pid if sig_sent
 
         # If you lost your pid_file, you are already died.
-        system "kill -KILL #{pid} >&2 2>#{::Guard::DEV_NULL}"
+        kill_process("KILL", pid)
         FileUtils.rm pid_file, :force => true
       end
     end
@@ -109,7 +109,7 @@ module Guard
 
     def kill_unmanaged_pid!
       if pid = unmanaged_pid
-        system "kill -KILL #{pid}"
+        kill_process("KILL", pid)
         FileUtils.rm pid_file
         wait_for_no_pid
       end
@@ -142,6 +142,15 @@ module Guard
         count += 1
       end
       !(count == MAX_WAIT_COUNT)
+    end
+
+    def kill_process(signal, pid)
+      begin
+        Process.kill(signal, pid)
+        true
+      rescue Errno::EINVAL, Errno::ESRCH, RangeError
+        false
+      end
     end
   end
 end
