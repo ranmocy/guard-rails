@@ -38,7 +38,7 @@ module Guard
       command = build_cli_command if options[:CLI]
       command ||= build_zeus_command if options[:zeus]
       command ||= build_rails_command
-      "#{environment.collect {|k,v| "#{k}=#{v} "}.join} cd \"#{@root}\" && #{command}"
+      "sh -c 'cd \"#{@root}\" && #{command} &'"
     end
 
     def environment
@@ -96,7 +96,7 @@ module Guard
     end
 
     def run_rails_command!
-      system "sh -c 'cd \"#{@root}\" && #{build_command} &'"
+      system(environment, build_command)
     end
 
     def has_pid?
