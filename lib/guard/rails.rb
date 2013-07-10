@@ -15,7 +15,7 @@ module Guard
       :daemon => false,
       :debugger => false,
       :environment => 'development',
-      :force_runs => false,
+      :force_run => false,
       :pid_file => nil, # construct the filename based on options[:environment] on runtime
       :port => 3000,
       :server => nil, # specified by rails
