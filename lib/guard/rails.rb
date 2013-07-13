@@ -33,7 +33,7 @@ module Guard
     end
 
     def start
-      UI.info "[Guard::Rails] will restart #{options[:server]} on port #{options[:port]} in #{options[:environment]}."
+      UI.info "[Guard::Rails] will start #{options[:server]} on port #{options[:port]} in #{options[:environment]}."
       reload("start") if options[:start_on_start]
     end
 
