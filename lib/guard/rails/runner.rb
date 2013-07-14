@@ -18,7 +18,7 @@ module Guard
     end
 
     def stop
-      if File.file?(pid_file)
+      if has_pid?
         pid = File.read(pid_file).strip.to_i
         sig_sent = kill_process("INT", pid)
         wait_for_no_pid if sig_sent
@@ -56,7 +56,7 @@ module Guard
     end
 
     def pid
-      File.file?(pid_file) ? File.read(pid_file).to_i : nil
+      has_pid? ? File.read(pid_file).to_i : nil
     end
 
     def sleep_time
