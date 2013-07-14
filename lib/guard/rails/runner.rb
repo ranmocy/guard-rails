@@ -25,7 +25,7 @@ module Guard
 
         # If you lost your pid_file, you are already died.
         kill_process("KILL", pid)
-        FileUtils.rm pid_file, :force => true
+        remove_pid_file_and_wait_for_no_pid
       end
     end
 
@@ -110,8 +110,7 @@ module Guard
     def kill_unmanaged_pid!
       if pid = unmanaged_pid
         kill_process("KILL", pid)
-        FileUtils.rm pid_file
-        wait_for_no_pid
+        remove_pid_file_and_wait_for_no_pid
       end
     end
 
@@ -128,16 +127,23 @@ module Guard
     private
 
     def wait_for_pid
-      wait_for_pid_loop
+      wait_for_pid_loop { has_pid? }
     end
 
     def wait_for_no_pid
-      wait_for_pid_loop(false)
+      wait_for_pid_loop { !has_pid? }
     end
 
-    def wait_for_pid_loop(check_for_existince = true)
+    def remove_pid_file_and_wait_for_no_pid
+      wait_for_pid_loop do
+        FileUtils.rm pid_file, :force => true
+        !has_pid?
+      end
+    end
+
+    def wait_for_pid_loop
       count = 0
-      while !(check_for_existince ? has_pid? : !has_pid?) && count < MAX_WAIT_COUNT
+      while !yield && count < MAX_WAIT_COUNT
         wait_for_pid_action
         count += 1
       end
