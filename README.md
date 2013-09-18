@@ -11,7 +11,7 @@ Please, come here and communicate with me.
 
 ## Install
 
-Please make sure to have [Guard][guard] installed before continue.
+Please make sure to have [Guard][guard] installed before continuing.
 
 Add Guard::Rails to your `Gemfile`:
 
@@ -27,12 +27,12 @@ Add the default Guard::Rails template to your `Guardfile` by running:
 $ guard init rails
 ```
 
-Now I can automatically restart your Rails development server as your files changed!
+Now I can automatically restart your Rails development server as your files change!
 
 ## Lots of fun options growing!
 
-* `:daemon` runs the server as a daemon, without any output to the terminal that ran `guard` (**default `false`**)
-* `:debugger` enable the debugger in server. Required ruby-debug gem. (**default `false`**)
+* `:daemon` runs the server as a daemon, without any output to the terminal that started `guard` (**default `false`**)
+* `:debugger` enable the debugger in server. Requires ruby-debug gem. (**default `false`**)
 * `:environment` is the server environment (**default `development`**)
 * `:force_run` kills any process that's holding the listen port before attempting to (re)start Rails (**default `false`**)
 * `:pid_file` specify your pid\_file (**default `tmp/pids/[RAILS_ENV].pid`**)
@@ -43,7 +43,7 @@ Now I can automatically restart your Rails development server as your files chan
 * `:timeout` waits when restarting the Rails server, in seconds (**default `30`**).
 * `:zeus_plan` the [custom plan][zeus-custom-plan] in zeus, only works when `zeus` option is `true` (**default `server`**)
 * `:zeus` support [zeus][zeus] to boost rails init speed (**default `false`**).
-* `:CLI` construct the runner command as your willing! Will omit all options above except `pid_file`! (**default `rails server --pid tmp/pids/[RAILS_ENV].pid`**)
+* `:CLI` construct the runner command as you will! Will omit all options above except `pid_file`! (**default `rails server --pid tmp/pids/[RAILS_ENV].pid`**)
 
 ## How-to
 
@@ -52,18 +52,18 @@ Now I can automatically restart your Rails development server as your files chan
 ## Philosophy
 
 * **All Platforms** MRI is the main test case. But will be tested under REE and JRuby.
-* **Live in edge** Ruby 1.8.7 has been deprecated. Guard-Rails will be tested under Ruby 1.9.3, 2.0.0 with newest gems. Will be rewrited with features of Ruby 2.0.0 as version 1.0.0.
+* **Live on the edge** Ruby 1.8.7 has been deprecated. Guard-Rails will be tested under Ruby 1.9.3, 2.0.0 with newest gems. Will be rewrited with features of Ruby 2.0.0 as version 1.0.0.
 * [Semantic Version](http://semver.org/)
 
 ## Contribute
 
-The best choise to contact me is the Issues and Pull Request system on GitHub.
+The best way to contact me is the Issues and Pull Request system on GitHub.
 Currently the official fork repository is at [ranmocy/guard-rails][ranmocy-guard-rails].
 
-Please, post your issue or pull request there.
+Please, post your issues or pull requests there.
 And I will be there as your call.
 
-## Contributor
+## Contributors
 
 * Ranmocy Sheng
 * John Bintz
