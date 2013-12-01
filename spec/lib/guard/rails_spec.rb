@@ -2,8 +2,7 @@ require 'spec_helper'
 require 'guard/rails'
 
 describe Guard::Rails do
-  let(:guard) { Guard::Rails.new(watchers, options) }
-  let(:watchers) { [] }
+  let(:guard) { Guard::Rails.new(options) }
   let(:options) { {} }
 
   describe '#initialize' do
