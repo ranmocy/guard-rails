@@ -1,10 +1,10 @@
 require 'guard'
-require 'guard/guard'
+require 'guard/plugin'
 require 'guard/rails/runner'
 require 'rbconfig'
 
 module Guard
-  class Rails < ::Guard::Guard
+  class Rails < Plugin
     # Use gem `version` to support versioning
     # is_versioned
 
@@ -25,7 +25,7 @@ module Guard
       :zeus => false,
     }
 
-    def initialize(watchers = [], options = {})
+    def initialize(options = {})
       super
       @options = DEFAULT_OPTIONS.merge(options)
 
@@ -58,7 +58,5 @@ module Guard
     def run_on_modifications(paths)
       reload
     end
-
-    alias :run_on_change :run_on_modifications
   end
 end
