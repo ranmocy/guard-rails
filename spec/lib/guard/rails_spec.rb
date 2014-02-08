@@ -102,10 +102,10 @@ describe Guard::Rails do
     end
   end
 
-  describe '#run_on_change' do
-    it "should reload on change" do
+  describe '#run_on_modifications' do
+    it "should reload on modifications" do
       guard.expects(:reload).once
-      guard.run_on_change([])
+      guard.run_on_modifications([])
     end
   end
 end

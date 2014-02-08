@@ -55,10 +55,8 @@ module Guard
       runner.stop
     end
 
-    def run_on_changes(paths)
+    def run_on_modifications(paths)
       reload
     end
-
-    alias :run_on_change :run_on_changes
   end
 end
