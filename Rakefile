@@ -24,9 +24,7 @@ task :default => 'spec:platforms'
 desc 'Push everywhere!'
 task :publish do
   system %{git push origin}
-  system %{git push guard}
   system %{git push gitcafe}
   system %{git push origin --tags}
-  system %{git push guard --tags}
   system %{git push gitcafe --tags}
 end
