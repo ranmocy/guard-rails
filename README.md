@@ -47,7 +47,8 @@ Now I can automatically restart your Rails development server as your files chan
 
 ## How-to
 
-* **Multiple instances** use `pid_file` option to run multiple instances with same rails\_env
+* **Multiple instances** use `pid_file` option to run multiple instances with same rails\_env.
+* **Avoid multiple autoruns when editing by VIM and Emacs** move the backup files to somewhere else or just ignore them in Guardfile.
 
 ## Philosophy
 
