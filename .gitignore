@@ -1,6 +1,5 @@
 .rvmrc
 .rspec
-Gemfile.lock
 
 *.gem
 
