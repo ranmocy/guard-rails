@@ -202,7 +202,7 @@ describe Guard::RailsRunner do
       end
 
       it "should act properly" do
-        runner.start.should be_true
+        runner.start.should be
       end
     end
 
@@ -216,7 +216,7 @@ describe Guard::RailsRunner do
       end
 
       it "should act properly" do
-        runner.start.should be_true
+        runner.start.should be
       end
     end
 
@@ -228,7 +228,7 @@ describe Guard::RailsRunner do
       end
 
       it "should act properly" do
-        runner.start.should be_false
+        runner.start.should_not be
       end
     end
   end
