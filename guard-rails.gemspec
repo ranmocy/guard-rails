@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'guard', '>= 2.0.0'
 
-  s.add_development_dependency 'rspec', '>= 2.6.0'
-  s.add_development_dependency 'mocha', '>= 0.13.1'
+  s.add_development_dependency 'rspec', '~> 2.6'
+  s.add_development_dependency 'mocha', '~> 1.0'
   s.add_development_dependency 'version', '>= 1.0.0'
 end
