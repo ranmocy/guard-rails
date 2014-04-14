@@ -42,6 +42,7 @@ module Guard
       UI.info title
       Notifier.notify("Rails #{action}ing on port #{options[:port]} in #{options[:environment]}...", :title => title, :image => :pending)
       if runner.restart
+        hook "restart_done"
         UI.info "Rails #{action}ed, pid #{runner.pid}"
         Notifier.notify("Rails #{action}ed on port #{options[:port]}.", :title => "Rails #{action}ed!", :image => :success)
       else
