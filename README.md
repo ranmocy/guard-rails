@@ -49,6 +49,7 @@ Now I can automatically restart your Rails development server as your files chan
 
 * **Multiple instances** use `pid_file` option to run multiple instances with same rails\_env.
 * **Avoid multiple autoruns when editing by VIM and Emacs** move the backup files to somewhere else or just ignore them in Guardfile.
+* **Use binding.pry in Rails** Actually you can't! See discussion [here](https://github.com/ranmocy/guard-rails/issues/24).
 
 ## Philosophy
 
