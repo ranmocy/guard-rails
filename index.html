@@ -45,58 +45,62 @@ Please, come here and communicate with me.</p>
 <h2>
 <a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
 
-<p>Please make sure to have <a href="https://github.com/guard/guard">Guard</a> installed before continue.</p>
+<p>Please make sure to have <a href="https://github.com/guard/guard">Guard</a> installed before continuing.</p>
 
 <p>Add Guard::Rails to your <code>Gemfile</code>:</p>
 
-<div class="highlight"><pre><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+<div class="highlight highlight-ruby"><pre><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
   <span class="n">gem</span> <span class="s1">'guard-rails'</span>
 <span class="k">end</span>
 </pre></div>
 
 <p>Add the default Guard::Rails template to your <code>Guardfile</code> by running:</p>
 
-<div class="highlight"><pre><span class="nv">$ </span>guard init rails
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>guard init rails
 </pre></div>
 
-<p>Now I can automatically restart your Rails development server as your files changed!</p>
+<p>Now I can automatically restart your Rails development server as your files change!</p>
 
 <h2>
 <a name="lots-of-fun-options-growing" class="anchor" href="#lots-of-fun-options-growing"><span class="octicon octicon-link"></span></a>Lots of fun options growing!</h2>
 
 <ul>
 <li>
-<code>:daemon</code> runs the server as a daemon, without any output to the terminal that ran <code>guard</code> (**default <code>false</code>**)</li>
+<code>:daemon</code> runs the server as a daemon, without any output to the terminal that started <code>guard</code> (<strong>default <code>false</code></strong>)</li>
 <li>
-<code>:debugger</code> enable the debugger in server. Required ruby-debug gem. (**default <code>false</code>**)</li>
+<code>:debugger</code> enable the debugger in server. Requires ruby-debug gem. (<strong>default <code>false</code></strong>)</li>
 <li>
-<code>:environment</code> is the server environment (**default <code>development</code>**)</li>
+<code>:environment</code> is the server environment (<strong>default <code>development</code></strong>)</li>
 <li>
-<code>:force_run</code> kills any process that's holding the listen port before attempting to (re)start Rails (**default <code>false</code>**)</li>
+<code>:force_run</code> kills any process that's holding the listen port before attempting to (re)start Rails (<strong>default <code>false</code></strong>)</li>
 <li>
-<code>:pid_file</code> specify your pid_file (**default <code>tmp/pids/[RAILS_ENV].pid</code>**)</li>
+<code>:pid_file</code> specify your pid_file (<strong>default <code>tmp/pids/[RAILS_ENV].pid</code></strong>)</li>
 <li>
-<code>:port</code> is the server port number (**default <code>3000</code>**)</li>
+<code>:port</code> is the server port number (<strong>default <code>3000</code></strong>)</li>
 <li>
 <code>:root</code> lets you specify the Rails root, i.e. for using guard-rails to run a dummy app within an engine (try <code>:root =&gt; '/spec/dummy'</code>).</li>
 <li>
-<code>:server</code> the webserver engine to use (**try <code>:server =&gt; :thin</code>**)</li>
+<code>:server</code> the webserver engine to use (<strong>try <code>:server =&gt; :thin</code></strong>)</li>
 <li>
-<code>:start_on_start</code> will start the server when starting Guard (**default <code>true</code>**)</li>
+<code>:start_on_start</code> will start the server when starting Guard (<strong>default <code>true</code></strong>)</li>
 <li>
-<code>:timeout</code> waits when restarting the Rails server, in seconds (**default <code>30</code>**).</li>
+<code>:timeout</code> waits when restarting the Rails server, in seconds (<strong>default <code>30</code></strong>).</li>
 <li>
-<code>:zeus_plan</code> the <a href="https://github.com/burke/zeus/blob/master/docs/ruby/modifying.md">custom plan</a> in zeus, only works when <code>zeus</code> option is <code>true</code> (**default <code>server</code>**)</li>
+<code>:zeus_plan</code> the <a href="https://github.com/burke/zeus/blob/master/docs/ruby/modifying.md">custom plan</a> in zeus, only works when <code>zeus</code> option is <code>true</code> (<strong>default <code>server</code></strong>)</li>
 <li>
-<code>:zeus</code> support <a href="https://github.com/burke/zeus">zeus</a> to boost rails init speed (**default <code>false</code>**).</li>
+<code>:zeus</code> support <a href="https://github.com/burke/zeus">zeus</a> to boost rails init speed (<strong>default <code>false</code></strong>).</li>
 <li>
-<code>:CLI</code> construct the runner command as your willing! Will omit all options above except <code>pid_file</code>! (**default <code>rails server --pid tmp/pids/[RAILS_ENV].pid</code>**)</li>
+<code>:CLI</code> construct the runner command as you will! Will omit all options above except <code>pid_file</code>! (<strong>default <code>rails server --pid tmp/pids/[RAILS_ENV].pid</code></strong>)</li>
 </ul><h2>
 <a name="how-to" class="anchor" href="#how-to"><span class="octicon octicon-link"></span></a>How-to</h2>
 
 <ul>
 <li>
-<strong>Multiple instances</strong> use <code>pid_file</code> option to run multiple instances with same rails_env</li>
+<strong>Multiple instances</strong> use <code>pid_file</code> option to run multiple instances with same rails_env.</li>
+<li>
+<strong>Avoid multiple autoruns when editing by VIM and Emacs</strong> move the backup files to somewhere else or just ignore them in Guardfile.</li>
+<li>
+<strong>Use binding.pry in Rails</strong> Actually you can't! See discussion <a href="https://github.com/ranmocy/guard-rails/issues/24">here</a>.</li>
 </ul><h2>
 <a name="philosophy" class="anchor" href="#philosophy"><span class="octicon octicon-link"></span></a>Philosophy</h2>
 
@@ -104,36 +108,41 @@ Please, come here and communicate with me.</p>
 <li>
 <strong>All Platforms</strong> MRI is the main test case. But will be tested under REE and JRuby.</li>
 <li>
-<strong>Live in edge</strong> Ruby 1.8.7 has been deprecated. Guard-Rails will be tested under Ruby 1.9.3, 2.0.0 with newest gems. Will be rewrited with features of Ruby 2.0.0 as version 1.0.0.</li>
+<strong>Live on the edge</strong> Ruby 1.8.7 has been deprecated. Guard-Rails will be tested under Ruby 1.9.3, 2.0.0 with newest gems. Will be rewrited with features of Ruby 2.0.0 as version 1.0.0.</li>
 <li><a href="http://semver.org/">Semantic Version</a></li>
 </ul><h2>
 <a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute</h2>
 
-<p>The best choise to contact me is the Issues and Pull Request system on GitHub.
+<p>The best way to contact me is the Issues and Pull Request system on GitHub.
 Currently the official fork repository is at <a href="http://github.com/ranmocy/guard-rails">ranmocy/guard-rails</a>.</p>
 
-<p>Please, post your issue or pull request there.
+<p>Please, post your issues or pull requests there.
 And I will be there as your call.</p>
 
 <h2>
-<a name="contributor" class="anchor" href="#contributor"><span class="octicon octicon-link"></span></a>Contributor</h2>
+<a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h2>
 
 <ul>
 <li>Ranmocy Sheng</li>
 <li>John Bintz</li>
+<li>cablegram</li>
 <li>Joel Moss</li>
 <li>Sidney Burks</li>
 <li>Paul Schyska</li>
-<li>Tim Preston</li>
-<li>Nathan Broadbent</li>
 <li>Adam Michel</li>
-<li>Benjamin Sullivan</li>
+<li>Nathan Broadbent</li>
+<li>Tim Preston</li>
+<li>killphi</li>
+<li>Grant Hutchins and Jonathan Mukai-Heidt</li>
 <li>Everard Brown</li>
 <li>Darrin Holst</li>
-<li>Grant Hutchins and Jonathan Mukai-Heidt</li>
 <li>Michel Pavan Macedo</li>
-<li>cablegram</li>
-</ul>
+<li>Benjamin Sullivan</li>
+<li>Johnny Robeson</li>
+</ul><h2>
+<a name="copyright" class="anchor" href="#copyright"><span class="octicon octicon-link"></span></a>Copyright</h2>
+
+<p>Guard-rails is under <strong><a href="http://ranmocy.info/piece/FYHPL.txt">FOLLOW YOUR HEART PUBLIC LICENSE</a></strong> version 1.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/ranmocy">ranmocy</a></p>
