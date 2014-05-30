@@ -4,9 +4,10 @@
 guard 'bundler' do
   watch('Gemfile')
   watch(/^.+\.gemspec/)
+  watch('VERSION')
 end
 
-guard 'rspec', :cli => "--color --format documentation" do
+guard 'rspec', cmd: "bundle exec rspec --color --format documentation" do
   watch('Gemfile.lock')
   watch(%r{^spec/.+_spec\.rb})
   watch(%r{^lib/(.+)\.rb})     { |m| "spec/lib/#{m[1]}_spec.rb" }
