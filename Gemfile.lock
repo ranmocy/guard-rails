@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    guard-rails (0.5.0)
-      guard (>= 2.0.0)
+    guard-rails (0.5.1)
+      guard (~> 2.0)
 
 GEM
   remote: http://rubygems.org/
