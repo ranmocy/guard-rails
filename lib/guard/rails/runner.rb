@@ -38,8 +38,7 @@ module Guard
       command = build_cli_command if options[:CLI]
       command ||= build_zeus_command if options[:zeus]
       command ||= build_rails_command
-      # zeus will check if it runs inside bundler, remove the flag here
-      "env -u RUBYOPT sh -c 'cd \"#{@root}\" && #{command} &'"
+      "sh -c 'cd \"#{@root}\" && #{command} &'"
     end
 
     def environment
@@ -89,7 +88,8 @@ module Guard
         options[:zeus_plan] || 'server',
       ]
 
-      "zeus #{zeus_options.join(' ')} #{build_options}"
+      # zeus will check if it runs inside bundler, remove the flag here
+      "RUBYOPT='' zeus #{zeus_options.join(' ')} #{build_options}"
     end
 
     def build_rails_command
