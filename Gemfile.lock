@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    guard-rails (0.5.2)
+    guard-rails (0.5.3)
       guard (~> 2.0)
 
 GEM
