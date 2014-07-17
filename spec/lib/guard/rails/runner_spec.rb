@@ -129,10 +129,6 @@ describe Guard::RailsRunner do
         runner.build_command.should match(%r{zeus server })
       end
 
-      it "should remove RUBYOPT env var to pretent running outside bundler" do
-        runner.build_command.should match(%r{RUBYOPT='' })
-      end
-
       context "custom zeus plan" do
         let(:options) { default_options.merge(:zeus => true, :zeus_plan => 'test_server') }
         it "should use custom zeus plan" do

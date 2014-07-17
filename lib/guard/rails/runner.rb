@@ -87,17 +87,23 @@ module Guard
       zeus_options = [
         options[:zeus_plan] || 'server',
       ]
-
-      # zeus will check if it runs inside bundler, remove the flag here
-      "RUBYOPT='' zeus #{zeus_options.join(' ')} #{build_options}"
+      "zeus #{zeus_options.join(' ')} #{build_options}"
     end
 
     def build_rails_command
       "rails server #{build_options}"
     end
 
+    def without_bundler_env
+      if defined?(::Bundler)
+        ::Bundler.with_clean_env { yield }
+      else
+        yield
+      end
+    end
+
     def run_rails_command!
-      system(environment, build_command)
+      without_bundler_env { system(environment, build_command) }
     end
 
     def has_pid?
