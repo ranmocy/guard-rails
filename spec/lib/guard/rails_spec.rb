@@ -9,7 +9,7 @@ describe Guard::Rails do
     it "should initialize with options" do
       guard
 
-      guard.runner.options[:port].should == 3000
+      expect(guard.runner.options[:port]).to eq 3000
     end
   end
 

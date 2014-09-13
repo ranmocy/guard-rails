@@ -22,13 +22,13 @@ describe Guard::RailsRunner do
       end
 
       it "should read the pid" do
-        runner.pid.should == pid
+        expect(runner.pid).to eq(pid)
       end
     end
 
     context 'pid file does not exist' do
       it "should return nil" do
-        runner.pid.should be_nil
+        expect(runner.pid).to be nil
       end
     end
 
@@ -42,7 +42,7 @@ describe Guard::RailsRunner do
       end
 
       it "should point to the right pid file" do
-        runner.pid_file.should match %r{spec/dummy/tmp/pids/development.pid}
+        expect(runner.pid_file).to match %r{spec/dummy/tmp/pids/development.pid}
       end
     end
 
@@ -53,40 +53,40 @@ describe Guard::RailsRunner do
       let(:custom_cli) { 'custom_CLI_command' }
       let(:options) { default_options.merge(:CLI => custom_cli) }
       it "should have only custom CLI" do
-        runner.build_command.should match(%r{#{custom_cli} --pid })
+        expect(runner.build_command).to match(%r{#{custom_cli} --pid })
       end
 
       let(:custom_pid_file) { "tmp/pids/rails_dev.pid" }
       let(:options) { default_options.merge(:CLI => custom_cli, :pid_file => custom_pid_file) }
       it "should use custom pid_file" do
         pid_file_path = File.expand_path custom_pid_file
-        runner.build_command.should match(%r{#{custom_cli} --pid \"#{pid_file_path}\"})
+        expect(runner.build_command).to match(%r{#{custom_cli} --pid \"#{pid_file_path}\"})
       end
     end
 
     context "daemon" do
       it "should should not have daemon switch" do
-        runner.build_command.should_not match(%r{ -d})
+        expect(runner.build_command).not_to match(%r{ -d})
       end
     end
 
     context "no daemon" do
       let(:options) { default_options.merge(:daemon => true) }
       it "should have a daemon switch" do
-        runner.build_command.should match(%r{ -d})
+        expect(runner.build_command).to match(%r{ -d})
       end
     end
 
     context "development" do
       it "should have environment switch to development" do
-        runner.build_command.should match(%r{ -e development})
+        expect(runner.build_command).to match(%r{ -e development})
       end
     end
 
     context "test" do
       let(:options) { default_options.merge(:environment => 'test') }
       it "should have environment switch to test" do
-        runner.build_command.should match(%r{ -e test})
+        expect(runner.build_command).to match(%r{ -e test})
       end
     end
 
@@ -94,7 +94,7 @@ describe Guard::RailsRunner do
       let(:options) { default_options.merge(:debugger => true) }
 
       it "should have a debugger switch" do
-        runner.build_command.should match(%r{ -u})
+        expect(runner.build_command).to match(%r{ -u})
       end
     end
 
@@ -102,14 +102,14 @@ describe Guard::RailsRunner do
       let(:options) { default_options.merge(:server => 'thin') }
 
       it "should have the server name" do
-        runner.build_command.should match(%r{thin})
+        expect(runner.build_command).to match(%r{thin})
       end
     end
 
     context "no pid_file" do
       it "should use default pid_file" do
         pid_file_path = File.expand_path "tmp/pids/development.pid"
-        runner.build_command.should match(%r{ --pid \"#{pid_file_path}\"})
+        expect(runner.build_command).to match(%r{ --pid \"#{pid_file_path}\"})
       end
     end
 
@@ -119,26 +119,26 @@ describe Guard::RailsRunner do
 
       it "should use custom pid_file" do
         pid_file_path = File.expand_path custom_pid_file
-        runner.build_command.should match(%r{ --pid \"#{pid_file_path}\"})
+        expect(runner.build_command).to match(%r{ --pid \"#{pid_file_path}\"})
       end
     end
 
     context "zeus enabled" do
       let(:options) { default_options.merge(:zeus => true) }
       it "should have zeus in command" do
-        runner.build_command.should match(%r{zeus server })
+        expect(runner.build_command).to match(%r{zeus server })
       end
 
       context "custom zeus plan" do
         let(:options) { default_options.merge(:zeus => true, :zeus_plan => 'test_server') }
         it "should use custom zeus plan" do
-          runner.build_command.should match(%r{zeus test_server})
+          expect(runner.build_command).to match(%r{zeus test_server})
         end
 
         context "custom server" do
           let(:options) { default_options.merge(:zeus => true, :zeus_plan => 'test_server', :server => 'thin') }
           it "should use custom server" do
-            runner.build_command.should match(%r{zeus test_server .* thin})
+            expect(runner.build_command).to match(%r{zeus test_server .* thin})
           end
         end
       end
@@ -146,12 +146,12 @@ describe Guard::RailsRunner do
 
     context "zeus disabled" do
       it "should not have zeus in command" do
-        runner.build_command.should_not match(%r{zeus server })
+        expect(runner.build_command).to_not match(%r{zeus server })
       end
 
       let(:options) { default_options.merge(:zeus_plan => 'test_server') }
       it "should have no effect of command" do
-        runner.build_command.should_not match(%r{test_server})
+        expect(runner.build_command).to_not match(%r{test_server})
       end
     end
 
@@ -159,28 +159,28 @@ describe Guard::RailsRunner do
       let(:options) { default_options.merge(:root => 'spec/dummy') }
 
       it "should have a cd with the custom rails root" do
-        runner.build_command.should match(%r{cd .*/spec/dummy\" &&})
+        expect(runner.build_command).to match(%r{cd .*/spec/dummy\" &&})
       end
     end
   end
 
   describe '#environment' do
     it "defaults RAILS_ENV to development" do
-      runner.environment["RAILS_ENV"].should == "development"
+      expect(runner.environment["RAILS_ENV"]).to eq "development"
     end
 
     context "with options[:environment]" do
       let(:options) { default_options.merge(:environment => 'bob') }
 
       it "defaults RAILS_ENV to nil" do
-        runner.environment["RAILS_ENV"].should == "bob"
+        expect(runner.environment["RAILS_ENV"]).to eq "bob"
       end
 
       context "zeus enabled" do
         let(:options) { default_options.merge(:zeus => true) }
 
         it "should set RAILS_ENV to nil" do
-          runner.environment["RAILS_ENV"].should be_nil
+          expect(runner.environment["RAILS_ENV"]).to be nil
         end
       end
     end
@@ -202,7 +202,7 @@ describe Guard::RailsRunner do
 
       context 'when under default env' do
         it 'run rails inside of bundler' do
-          runner.send(:run_rails_command!).should be true
+          expect(runner.send(:run_rails_command!)).to be true
         end
       end
 
@@ -210,7 +210,7 @@ describe Guard::RailsRunner do
         let(:options) { default_options.merge(:zeus => true) }
 
         it 'run rails outside of bundler' do
-          runner.send(:run_rails_command!).should be false
+          expect(runner.send(:run_rails_command!)).to be false
         end
       end
 
@@ -219,7 +219,7 @@ describe Guard::RailsRunner do
         let(:options) { default_options.merge(:CLI => custom_cli) }
 
         it 'run rails outside of bundler' do
-          runner.send(:run_rails_command!).should be false
+          expect(runner.send(:run_rails_command!)).to be false
         end
       end
     end
@@ -235,7 +235,7 @@ describe Guard::RailsRunner do
 
       context 'when under default env' do
         it 'run rails inside of bundler' do
-          runner.send(:run_rails_command!).should be false
+          expect(runner.send(:run_rails_command!)).to be false
         end
       end
 
@@ -243,7 +243,7 @@ describe Guard::RailsRunner do
         let(:options) { default_options.merge(:zeus => true) }
 
         it 'run rails outside of bundler' do
-          runner.send(:run_rails_command!).should be false
+          expect(runner.send(:run_rails_command!)).to be false
         end
       end
 
@@ -252,7 +252,7 @@ describe Guard::RailsRunner do
         let(:options) { default_options.merge(:CLI => custom_cli) }
 
         it 'run rails outside of bundler' do
-          runner.send(:run_rails_command!).should be false
+          expect(runner.send(:run_rails_command!)).to be false
         end
       end
     end
@@ -274,7 +274,7 @@ describe Guard::RailsRunner do
       end
 
       it "should act properly" do
-        runner.start.should be true
+        expect(runner.start).to be true
       end
     end
 
@@ -288,7 +288,7 @@ describe Guard::RailsRunner do
       end
 
       it "should act properly" do
-        runner.start.should be true
+        expect(runner.start).to be true
       end
     end
 
@@ -300,7 +300,7 @@ describe Guard::RailsRunner do
       end
 
       it "should act properly" do
-        runner.start.should be false
+        expect(runner.start).to be false
       end
     end
   end
@@ -310,7 +310,7 @@ describe Guard::RailsRunner do
     let(:options) { default_options.merge(:timeout => timeout) }
 
     it "should adjust the sleep time as necessary" do
-      runner.sleep_time.should == (timeout.to_f / Guard::RailsRunner::MAX_WAIT_COUNT.to_f)
+      expect(runner.sleep_time).to eq (timeout.to_f / Guard::RailsRunner::MAX_WAIT_COUNT.to_f)
     end
   end
 end
