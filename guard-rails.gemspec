@@ -11,12 +11,12 @@ Gem::Specification.new do |s|
   s.description = %q{Restart Rails when things change in your app}
   s.license     = 'MIT'
 
-  s.rubyforge_project = "guard-rails"
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.required_ruby_version = '>= 1.9'
 
   s.add_dependency 'guard', '~> 2.0'
 
