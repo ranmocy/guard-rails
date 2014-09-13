@@ -103,7 +103,11 @@ module Guard
     end
 
     def run_rails_command!
-      without_bundler_env { system(environment, build_command) }
+      if options[:CLI] || options[:zeus]
+        without_bundler_env { system(environment, build_command) }
+      else
+        system(environment, build_command)
+      end
     end
 
     def has_pid?
