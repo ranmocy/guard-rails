@@ -188,72 +188,64 @@ describe Guard::RailsRunner do
 
   describe '#run_rails_command' do
     before do
+      @bundler_env = ENV['BUNDLE_GEMFILE']
       runner.stubs(:build_command).returns("printenv BUNDLE_GEMFILE > /dev/null")
     end
+    after do
+      ENV['BUNDLE_GEMFILE'] = @bundler_env
+    end
 
-    context 'when guard-rails is outside of bundler' do
-      before do
-        @bundler_env = ENV['BUNDLE_GEMFILE']
-        ENV['BUNDLE_GEMFILE'] = 'Gemfile'
+    shared_examples "inside of the bundler" do
+      it 'runs rails inside of bundler' do
+        expect(runner.send(:run_rails_command!)).to be true
       end
-      after do
-        ENV['BUNDLE_GEMFILE'] = @bundler_env
-      end
+    end
 
-      context 'with default env' do
-        it 'runs rails inside of bundler' do
-          expect(runner.send(:run_rails_command!)).to be true
-        end
-      end
-
-      context 'with zeus' do
-        let(:options) { default_options.merge(:zeus => true) }
-
-        it 'runs rails outside of bundler' do
-          expect(runner.send(:run_rails_command!)).to be false
-        end
-      end
-
-      context 'with CLI' do
-        let(:custom_cli) { 'custom_CLI_command' }
-        let(:options) { default_options.merge(:CLI => custom_cli) }
-
-        it 'runs rails outside of bundler' do
-          expect(runner.send(:run_rails_command!)).to be false
-        end
+    shared_examples "outside of the bundler" do
+      it 'runs rails outside of bundler' do
+        expect(runner.send(:run_rails_command!)).to be false
       end
     end
 
     context 'when guard-rails is outside of bundler' do
       before do
-        @bundler_env = ENV['BUNDLE_GEMFILE']
-        ENV['BUNDLE_GEMFILE'] = nil
-      end
-      after do
-        ENV['BUNDLE_GEMFILE'] = @bundler_env
+        ENV['BUNDLE_GEMFILE'] = 'Gemfile'
       end
 
       context 'with default env' do
-        it 'runs rails outside of bundler' do
-          expect(runner.send(:run_rails_command!)).to be false
-        end
+        it_behaves_like "inside of the bundler"
       end
 
       context 'with zeus' do
         let(:options) { default_options.merge(:zeus => true) }
-
-        it 'runs rails outside of bundler' do
-          expect(runner.send(:run_rails_command!)).to be false
-        end
+        it_behaves_like "outside of the bundler"
       end
 
       context 'with CLI' do
         let(:custom_cli) { 'custom_CLI_command' }
         let(:options) { default_options.merge(:CLI => custom_cli) }
+        it_behaves_like "outside of the bundler"
+      end
+    end
 
-        it 'runs rails outside of bundler' do
-          expect(runner.send(:run_rails_command!)).to be false
-        end
+    context 'when guard-rails is outside of bundler' do
+      before do
+        ENV['BUNDLE_GEMFILE'] = nil
+      end
+
+      context 'with default env' do
+        it_behaves_like "outside of the bundler"
+      end
+
+      context 'with zeus' do
+        let(:options) { default_options.merge(:zeus => true) }
+        it_behaves_like "outside of the bundler"
+      end
+
+      context 'with CLI' do
+        let(:custom_cli) { 'custom_CLI_command' }
+        let(:options) { default_options.merge(:CLI => custom_cli) }
+        it_behaves_like "outside of the bundler"
       end
     end
   end
