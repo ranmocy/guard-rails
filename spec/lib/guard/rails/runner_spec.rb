@@ -186,6 +186,78 @@ describe Guard::RailsRunner do
     end
   end
 
+  describe '#run_rails_command' do
+    before do
+      runner.stubs(:build_command).returns("printenv BUNDLE_GEMFILE > /dev/null")
+    end
+
+    context 'when guard-rails is outside of bundler' do
+      before do
+        @bundler_env = ENV['BUNDLE_GEMFILE']
+        ENV['BUNDLE_GEMFILE'] = 'Gemfile'
+      end
+      after do
+        ENV['BUNDLE_GEMFILE'] = @bundler_env
+      end
+
+      context 'when under default env' do
+        it 'run rails inside of bundler' do
+          runner.send(:run_rails_command!).should be true
+        end
+      end
+
+      context 'when under zeus' do
+        let(:options) { default_options.merge(:zeus => true) }
+
+        it 'run rails outside of bundler' do
+          runner.send(:run_rails_command!).should be false
+        end
+      end
+
+      context 'when under CLI' do
+        let(:custom_cli) { 'custom_CLI_command' }
+        let(:options) { default_options.merge(:CLI => custom_cli) }
+
+        it 'run rails outside of bundler' do
+          runner.send(:run_rails_command!).should be false
+        end
+      end
+    end
+
+    context 'when guard-rails is outside of bundler' do
+      before do
+        @bundler_env = ENV['BUNDLE_GEMFILE']
+        ENV['BUNDLE_GEMFILE'] = nil
+      end
+      after do
+        ENV['BUNDLE_GEMFILE'] = @bundler_env
+      end
+
+      context 'when under default env' do
+        it 'run rails inside of bundler' do
+          runner.send(:run_rails_command!).should be false
+        end
+      end
+
+      context 'when under zeus' do
+        let(:options) { default_options.merge(:zeus => true) }
+
+        it 'run rails outside of bundler' do
+          runner.send(:run_rails_command!).should be false
+        end
+      end
+
+      context 'when under CLI' do
+        let(:custom_cli) { 'custom_CLI_command' }
+        let(:options) { default_options.merge(:CLI => custom_cli) }
+
+        it 'run rails outside of bundler' do
+          runner.send(:run_rails_command!).should be false
+        end
+      end
+    end
+  end
+
   describe '#start' do
     let(:kill_expectation) { runner.expects(:kill_unmanaged_pid!) }
     let(:pid_stub) { runner.stubs(:has_pid?) }
