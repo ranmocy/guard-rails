@@ -22,5 +22,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'mocha', '~> 1.0'
+  s.add_development_dependency 'fakefs', '~> 0.5'
   s.add_development_dependency 'version', '>= 1.0.0'
 end
