@@ -6,3 +6,5 @@
 .bundle/
 pkg/*
 tmp/
+coverage/
+
