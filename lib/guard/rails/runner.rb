@@ -166,7 +166,10 @@ module Guard
         begin
           Process.kill(signal, pid)
           true
-        rescue Errno::EINVAL, Errno::ESRCH, RangeError
+        rescue Errno::EPERM
+          UI.info "[Guard::Rails::Error] Don't have permission to KILL!"
+          false
+        rescue Errno::EINVAL, ArgumentError, Errno::ESRCH, RangeError
           false
         end
       end

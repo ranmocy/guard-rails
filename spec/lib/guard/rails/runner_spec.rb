@@ -376,6 +376,26 @@ describe Guard::Rails::Runner do
     end
   end
 
+  describe '#kill_process' do
+    let(:signal) { 'INT' }
+    let(:fake_signal) { 'INT0' }
+    let(:pid) { 12345 }
+
+    it 'returns true if killed' do
+      mock(Process).kill(signal, pid) { 0 }
+      expect(runner.send(:kill_process, signal, pid)).to be true
+    end
+
+    it 'returns false if signal is wrong' do
+      expect(runner.send(:kill_process, fake_signal, pid)).to be false
+    end
+
+    it 'returns false if no permission to kill' do
+      mock(Process).kill(signal, pid) { raise Errno::EPERM }
+      expect(runner.send(:kill_process, signal, pid)).to be false
+    end
+  end
+
   describe '#sleep_time' do
     let(:timeout) { 30 }
     let(:options) { default_options.merge(:timeout => timeout) }
