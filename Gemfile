@@ -10,3 +10,6 @@ gem 'guard-rspec'
 # Notification System
 gem 'terminal-notifier-guard', require: RUBY_PLATFORM.downcase.include?("darwin") ? 'terminal-notifier-guard' : nil
 gem 'libnotify', require: RUBY_PLATFORM.downcase.include?("linux") ? 'libnotify' : nil
+
+# Test Coverage
+gem "codeclimate-test-reporter", group: :test, require: nil
