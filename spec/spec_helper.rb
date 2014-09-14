@@ -1,5 +1,3 @@
-require 'mocha/api'
-
 RSpec.configure do |c|
-  c.mock_with :mocha
+  c.mock_with :rr
 end

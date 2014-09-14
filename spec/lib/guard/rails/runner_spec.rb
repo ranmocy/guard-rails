@@ -189,7 +189,7 @@ describe Guard::RailsRunner do
   describe '#run_rails_command' do
     before do
       @bundler_env = ENV['BUNDLE_GEMFILE']
-      runner.stubs(:build_command).returns("printenv BUNDLE_GEMFILE > /dev/null")
+      stub(runner).build_command.returns("printenv BUNDLE_GEMFILE > /dev/null")
     end
     after do
       ENV['BUNDLE_GEMFILE'] = @bundler_env
@@ -251,18 +251,18 @@ describe Guard::RailsRunner do
   end
 
   describe '#start' do
-    let(:kill_expectation) { runner.expects(:kill_unmanaged_pid!) }
-    let(:pid_stub) { runner.stubs(:has_pid?) }
+    let(:kill_expectation) { mock(runner).kill_unmanaged_pid! }
+    let(:pid_stub) { stub(runner).has_pid? }
 
     before do
-      runner.expects(:run_rails_command!).once
+      mock(runner).run_rails_command!.once
     end
 
     context 'without options[:force_run]' do
       before do
         pid_stub.returns(true)
         kill_expectation.never
-        runner.expects(:wait_for_pid_action).never
+        mock(runner).wait_for_pid_action.never
       end
 
       it "starts as normal" do
@@ -276,7 +276,7 @@ describe Guard::RailsRunner do
       before do
         pid_stub.returns(true)
         kill_expectation.once
-        runner.expects(:wait_for_pid_action).never
+        mock(runner).wait_for_pid_action.never
       end
 
       it "starts as normal" do
@@ -288,7 +288,7 @@ describe Guard::RailsRunner do
       before do
         pid_stub.returns(false)
         kill_expectation.never
-        runner.expects(:wait_for_pid_action).times(Guard::RailsRunner::MAX_WAIT_COUNT)
+        mock(runner).wait_for_pid_action.times(Guard::RailsRunner::MAX_WAIT_COUNT)
       end
 
       it "doesn't start" do

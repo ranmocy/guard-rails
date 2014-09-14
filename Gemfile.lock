@@ -36,10 +36,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     lumberjack (1.0.9)
-    metaclass (0.0.4)
     method_source (0.8.2)
-    mocha (1.1.0)
-      metaclass (~> 0.0.1)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -53,6 +50,7 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
+    rr (1.1.2)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -85,8 +83,8 @@ DEPENDENCIES
   guard-rails!
   guard-rspec
   libnotify
-  mocha (~> 1.0)
   rake
+  rr (~> 1.0)
   rspec (~> 3.0)
   terminal-notifier-guard
   version (>= 1.0.0)
