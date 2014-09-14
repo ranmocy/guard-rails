@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/ranmocy/guard-rails.png)](https://travis-ci.org/ranmocy/guard-rails)
 [![Dependency Status](https://gemnasium.com/ranmocy/guard-rails.png)](https://gemnasium.com/ranmocy/guard-rails)
 [![Code Climate](https://codeclimate.com/github/ranmocy/guard-rails.png)](https://codeclimate.com/github/ranmocy/guard-rails)
+[![Test Coverage](https://codeclimate.com/github/ranmocy/guard-rails/badges/coverage.svg)](https://codeclimate.com/github/ranmocy/guard-rails)
 
 ## Main repository
 Currently, the official fork repository is at [ranmocy/guard-rails][ranmocy-guard-rails].
