@@ -195,13 +195,13 @@ describe Guard::RailsRunner do
       ENV['BUNDLE_GEMFILE'] = @bundler_env
     end
 
-    shared_examples "inside of the bundler" do
+    shared_examples "inside of bundler" do
       it 'runs rails inside of bundler' do
         expect(runner.send(:run_rails_command!)).to be true
       end
     end
 
-    shared_examples "outside of the bundler" do
+    shared_examples "outside of bundler" do
       it 'runs rails outside of bundler' do
         expect(runner.send(:run_rails_command!)).to be false
       end
@@ -213,18 +213,18 @@ describe Guard::RailsRunner do
       end
 
       context 'with default env' do
-        it_behaves_like "inside of the bundler"
+        it_behaves_like "inside of bundler"
       end
 
       context 'with zeus' do
         let(:options) { default_options.merge(:zeus => true) }
-        it_behaves_like "outside of the bundler"
+        it_behaves_like "outside of bundler"
       end
 
       context 'with CLI' do
         let(:custom_cli) { 'custom_CLI_command' }
         let(:options) { default_options.merge(:CLI => custom_cli) }
-        it_behaves_like "outside of the bundler"
+        it_behaves_like "outside of bundler"
       end
     end
 
@@ -234,18 +234,18 @@ describe Guard::RailsRunner do
       end
 
       context 'with default env' do
-        it_behaves_like "outside of the bundler"
+        it_behaves_like "outside of bundler"
       end
 
       context 'with zeus' do
         let(:options) { default_options.merge(:zeus => true) }
-        it_behaves_like "outside of the bundler"
+        it_behaves_like "outside of bundler"
       end
 
       context 'with CLI' do
         let(:custom_cli) { 'custom_CLI_command' }
         let(:options) { default_options.merge(:CLI => custom_cli) }
-        it_behaves_like "outside of the bundler"
+        it_behaves_like "outside of bundler"
       end
     end
   end
