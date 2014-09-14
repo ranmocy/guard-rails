@@ -1,9 +1,8 @@
 require 'spec_helper'
-require 'guard/rails/runner'
 require 'fakefs/spec_helpers'
 
-describe Guard::RailsRunner do
-  let(:runner) { Guard::RailsRunner.new(options) }
+describe Guard::Rails::Runner do
+  let(:runner) { Guard::Rails::Runner.new(options) }
   let(:environment) { 'development' }
   let(:port) { 3000 }
 
@@ -288,7 +287,7 @@ describe Guard::RailsRunner do
       before do
         pid_stub.returns(false)
         kill_expectation.never
-        mock(runner).wait_for_pid_action.times(Guard::RailsRunner::MAX_WAIT_COUNT)
+        mock(runner).wait_for_pid_action.times(Guard::Rails::Runner::MAX_WAIT_COUNT)
       end
 
       it "doesn't start" do
@@ -302,7 +301,7 @@ describe Guard::RailsRunner do
     let(:options) { default_options.merge(:timeout => timeout) }
 
     it "adjusts the sleep time as necessary" do
-      expect(runner.sleep_time).to eq (timeout.to_f / Guard::RailsRunner::MAX_WAIT_COUNT.to_f)
+      expect(runner.sleep_time).to eq (timeout.to_f / Guard::Rails::Runner::MAX_WAIT_COUNT.to_f)
     end
   end
 end

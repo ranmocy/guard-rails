@@ -1,3 +1,5 @@
+require 'guard/rails'
+
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 

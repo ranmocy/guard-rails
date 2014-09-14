@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'guard/rails'
 
 describe Guard::Rails do
   let(:guard) { Guard::Rails.new(options) }
@@ -39,14 +38,14 @@ describe Guard::Rails do
     let(:pid) { '12345' }
 
     before do
-      any_instance_of(Guard::RailsRunner, pid: pid)
+      any_instance_of(Guard::Rails::Runner, pid: pid)
     end
 
     context 'at start' do
       before do
         mock(Guard::UI).info.with('Starting Rails...')
         mock(Guard::Notifier).notify.with(/Rails starting/, hash_including(:image => :pending))
-        any_instance_of(Guard::RailsRunner, restart: true)
+        any_instance_of(Guard::Rails::Runner, restart: true)
       end
 
       it "starts and shows the pid file" do
@@ -59,14 +58,14 @@ describe Guard::Rails do
 
     context "after start" do
       before do
-        any_instance_of(Guard::RailsRunner, pid: pid)
+        any_instance_of(Guard::Rails::Runner, pid: pid)
         mock(Guard::UI).info.with('Restarting Rails...')
         mock(Guard::Notifier).notify.with(/Rails restarting/, hash_including(:image => :pending))
       end
 
       context "with pid file" do
         before do
-          any_instance_of(Guard::RailsRunner, restart: true)
+          any_instance_of(Guard::Rails::Runner, restart: true)
         end
 
         it "restarts and shows the pid file" do
@@ -79,7 +78,7 @@ describe Guard::Rails do
 
       context "without pid file" do
         before do
-          any_instance_of(Guard::RailsRunner, restart: false)
+          any_instance_of(Guard::Rails::Runner, restart: false)
         end
 
         it "restarts and shows the pid file" do

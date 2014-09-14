@@ -1,10 +1,11 @@
 require 'guard'
 require 'guard/plugin'
-require 'guard/rails/runner'
 require 'rbconfig'
 
 module Guard
   class Rails < Plugin
+    require 'guard/rails/runner'
+
     # Use gem `version` to support versioning
     # is_versioned
 
@@ -29,7 +30,7 @@ module Guard
       super
       @options = DEFAULT_OPTIONS.merge(options)
 
-      @runner = RailsRunner.new(@options)
+      @runner = Runner.new(@options)
     end
 
     def start
