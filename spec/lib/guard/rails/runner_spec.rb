@@ -296,6 +296,86 @@ describe Guard::Rails::Runner do
     end
   end
 
+  describe '#stop' do
+    include FakeFS::SpecHelpers
+
+    it 'stops' do
+      expect(runner.stop)
+    end
+
+    context 'when pid exists' do
+      let(:pid) { 12345 }
+
+      before do
+        FileUtils.mkdir_p File.split(runner.pid_file).first
+        File.open(runner.pid_file, 'w') { |f| f.print pid }
+      end
+
+      it 'removes the pid file' do
+        runner.stop
+        expect(File.exists?(runner.pid_file)).to be false
+      end
+
+      it 'kills the process with INT' do
+        mock(runner).kill_process.with("INT", pid).returns { true }
+        mock(runner).kill_process.with("KILL", pid).once
+        runner.stop
+      end
+
+      it 'kills the process with KILL when INT not work' do
+        mock(runner).kill_process.with("INT", pid).returns { false }
+        mock(runner).kill_process.with("KILL", pid).once
+        runner.stop
+      end
+    end
+
+    context "when pid file doesn't exist" do
+      it 'does nothing' do
+        mock(runner).kill_process.never
+      end
+    end
+  end
+
+  describe '#restart' do
+    it 'calls stop and start' do
+      mock(runner).stop.once
+      mock(runner).start.once
+      runner.restart
+    end
+  end
+
+  describe '#kill_unmanaged_pid!' do
+    let(:pid) { 12345 }
+
+    it 'kill processes if any' do
+      mock(runner).unmanaged_pid.returns { pid }
+      mock(runner).kill_process.with("KILL", pid).once
+      runner.send(:kill_unmanaged_pid!)
+    end
+
+    it 'does nothing if none' do
+      mock(runner).unmanaged_pid.returns { nil }
+      mock(runner).kill_process.with("KILL", pid).never
+      runner.send(:kill_unmanaged_pid!)
+    end
+  end
+
+  describe '#unmanaged_pid' do
+    let(:pid) { 12345 }
+
+    it 'returns pid if any' do
+      mock(runner, :'`').with(anything).returns {
+        "ruby #{pid} ranmocy 12u IPv4 0x9c30720e04d31a0f 0t0 TCP *:#{port} (LISTEN)"
+      }
+      expect(runner.send(:unmanaged_pid)).to eq pid
+    end
+
+    it 'returns nil if none' do
+      mock(runner, :'`').with(anything).returns { "\n" }
+      expect(runner.send(:unmanaged_pid)).to be nil
+    end
+  end
+
   describe '#sleep_time' do
     let(:timeout) { 30 }
     let(:options) { default_options.merge(:timeout => timeout) }

@@ -130,7 +130,7 @@ module Guard
         file_list = `lsof -n -i TCP:#{options[:port]}`
         file_list.each_line { |line|
           if line["*:#{options[:port]} "]
-            return line.split("\s")[1]
+            return line.split("\s")[1].to_i
           end
         }
         nil
