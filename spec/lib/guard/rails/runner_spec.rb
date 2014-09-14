@@ -206,7 +206,7 @@ describe Guard::Rails::Runner do
       end
     end
 
-    context 'when guard-rails is outside of bundler' do
+    context 'when guard-rails is inside of bundler' do
       before do
         ENV['BUNDLE_GEMFILE'] = 'Gemfile'
       end
@@ -230,6 +230,12 @@ describe Guard::Rails::Runner do
     context 'when guard-rails is outside of bundler' do
       before do
         ENV['BUNDLE_GEMFILE'] = nil
+        BundlerClass = Bundler
+        Object.send(:remove_const, :Bundler)
+      end
+      after do
+        Bundler = BundlerClass
+        Object.send(:remove_const, :BundlerClass)
       end
 
       context 'with default env' do
