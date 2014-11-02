@@ -21,7 +21,7 @@ module Guard
       def stop
         return unless has_pid?
 
-        if (pid = _read_pid)
+        if (pid = read_pid)
           sig_sent = kill_process("INT", pid)
           wait_for_no_pid if sig_sent
 
@@ -58,7 +58,7 @@ module Guard
       end
 
       def pid
-        has_pid? ? _read_pid : nil
+        has_pid? ? read_pid : nil
       end
 
       def sleep_time
@@ -175,11 +175,12 @@ module Guard
         end
       end
 
-      def _read_pid
+      def read_pid
         Integer(File.read(pid_file))
       rescue ArgumentError
         nil
       end
+
     end
   end
 end
