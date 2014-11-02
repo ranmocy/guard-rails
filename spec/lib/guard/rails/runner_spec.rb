@@ -337,6 +337,7 @@ describe Guard::Rails::Runner do
 
     context "when pid file doesn't exist" do
       it 'does nothing' do
+        runner.stop
         mock(runner).kill_process.never
       end
     end
