@@ -340,6 +340,24 @@ describe Guard::Rails::Runner do
         mock(runner).kill_process.never
       end
     end
+
+    context "when pid file is empty" do
+      before do
+        FileUtils.mkdir_p File.split(runner.pid_file).first
+        File.open(runner.pid_file, 'w') { |f| f.print "" }
+      end
+
+      it 'does nothing' do
+        mock(runner).kill_process.never
+        runner.stop
+      end
+
+      it 'removes the pid file' do
+        runner.stop
+        expect(File.exists?(runner.pid_file)).to be false
+      end
+
+    end
   end
 
   describe '#restart' do

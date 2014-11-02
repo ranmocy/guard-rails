@@ -19,15 +19,16 @@ module Guard
       end
 
       def stop
-        if has_pid?
-          pid = File.read(pid_file).strip.to_i
+        return unless has_pid?
+
+        if (pid = _read_pid)
           sig_sent = kill_process("INT", pid)
           wait_for_no_pid if sig_sent
 
           # If you lost your pid_file, you are already died.
           kill_process("KILL", pid)
-          remove_pid_file_and_wait_for_no_pid
         end
+        remove_pid_file_and_wait_for_no_pid
       end
 
       def restart
@@ -57,7 +58,7 @@ module Guard
       end
 
       def pid
-        has_pid? ? File.read(pid_file).to_i : nil
+        has_pid? ? _read_pid : nil
       end
 
       def sleep_time
@@ -172,6 +173,12 @@ module Guard
         rescue Errno::EINVAL, ArgumentError, Errno::ESRCH, RangeError
           false
         end
+      end
+
+      def _read_pid
+        Integer(File.read(pid_file))
+      rescue ArgumentError
+        nil
       end
     end
   end
