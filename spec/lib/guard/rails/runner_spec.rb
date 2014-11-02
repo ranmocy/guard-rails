@@ -417,6 +417,7 @@ describe Guard::Rails::Runner do
 
     it 'returns false if no permission to kill' do
       mock(Process).kill(signal, pid) { raise Errno::EPERM }
+      mock(Guard::UI).info("[Guard::Rails::Error] Don't have permission to KILL!")
       expect(runner.send(:kill_process, signal, pid)).to be false
     end
   end
