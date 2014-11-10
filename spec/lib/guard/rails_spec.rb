@@ -5,9 +5,10 @@ describe Guard::Rails do
   let(:options) { {} }
 
   describe "#initialize" do
-    it "initializes with options" do
+    it "initializes with default options" do
       guard
 
+      expect(guard.runner.options[:host]).to eq "localhost"
       expect(guard.runner.options[:port]).to eq 3000
     end
   end

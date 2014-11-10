@@ -18,6 +18,7 @@ module Guard
       environment: 'development',
       force_run: false,
       pid_file: nil, # construct the filename based on options[:environment] on runtime
+      host: "localhost",
       port: 3000,
       server: nil, # specified by rails
       start_on_start: true,

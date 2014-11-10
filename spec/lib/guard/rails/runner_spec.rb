@@ -3,11 +3,13 @@ require 'fakefs/spec_helpers'
 
 describe Guard::Rails::Runner do
   let(:runner) { Guard::Rails::Runner.new(options) }
-  let(:environment) { 'development' }
-  let(:port) { 3000 }
 
-  let(:default_options) { { environment: environment, port: port } }
+  let(:default_options) { Guard::Rails::DEFAULT_OPTIONS }
   let(:options) { default_options }
+
+  let(:default_environment) { default_options[:environment] }
+  let(:default_host) { default_options[:host] }
+  let(:default_port) { default_options[:port] }
 
   describe '#pid' do
     include FakeFS::SpecHelpers
@@ -41,7 +43,7 @@ describe Guard::Rails::Runner do
       end
 
       it "points to the right pid file" do
-        expect(runner.pid_file).to match %r{spec/dummy/tmp/pids/development.pid}
+        expect(runner.pid_file).to match %r{spec/dummy/tmp/pids/#{default_environment}.pid}
       end
     end
 
@@ -77,8 +79,8 @@ describe Guard::Rails::Runner do
     end
 
     context "without options[:env]" do
-      it "has environment switch to development" do
-        expect(runner.build_command).to match(%r{ -e development})
+      it "has environment switch to default" do
+        expect(runner.build_command).to match(%r{ -e #{default_environment}})
       end
     end
 
@@ -107,7 +109,7 @@ describe Guard::Rails::Runner do
 
     context "without options[:pid_file]" do
       it "uses default pid_file" do
-        pid_file_path = File.expand_path "tmp/pids/development.pid"
+        pid_file_path = File.expand_path "tmp/pids/#{default_environment}.pid"
         expect(runner.build_command).to match(%r{ --pid \"#{pid_file_path}\"})
       end
     end
@@ -119,6 +121,36 @@ describe Guard::Rails::Runner do
       it "uses customized pid_file" do
         pid_file_path = File.expand_path custom_pid_file
         expect(runner.build_command).to match(%r{ --pid \"#{pid_file_path}\"})
+      end
+    end
+
+    context 'with options[:host]' do
+      let(:host) { "1.2.3.4" }
+      let(:options) { default_options.merge(host: host) }
+
+      it 'use customized host' do
+        expect(runner.build_command).to match(/ -b #{host}/)
+      end
+    end
+
+    context 'without options[:host]' do
+      it 'use deafult host' do
+        expect(runner.build_command).to match(/ -b #{default_host}/)
+      end
+    end
+
+    context 'with options[:port]' do
+      let(:port) { 3456 }
+      let(:options) { default_options.merge(port: port) }
+
+      it 'use customized port' do
+        expect(runner.build_command).to match(/ -p #{port}/)
+      end
+    end
+
+    context 'without options[:port]' do
+      it 'use default port' do
+        expect(runner.build_command).to match(/ -p #{default_port}/)
       end
     end
 
@@ -164,8 +196,8 @@ describe Guard::Rails::Runner do
   end
 
   describe '#environment' do
-    it "sets RAILS_ENV to development" do
-      expect(runner.environment["RAILS_ENV"]).to eq "development"
+    it "sets RAILS_ENV to default" do
+      expect(runner.environment["RAILS_ENV"]).to eq default_environment
     end
 
     context "with options[:environment] as test" do
@@ -324,12 +356,14 @@ describe Guard::Rails::Runner do
 
       it 'kills the process with INT' do
         mock(runner).kill_process.with("INT", pid).returns { true }
+        mock(runner).wait_for_no_pid.once
         mock(runner).kill_process.with("KILL", pid).once
         runner.stop
       end
 
       it 'kills the process with KILL when INT not work' do
         mock(runner).kill_process.with("INT", pid).returns { false }
+        mock(runner).wait_for_no_pid.never
         mock(runner).kill_process.with("KILL", pid).once
         runner.stop
       end
@@ -390,7 +424,7 @@ describe Guard::Rails::Runner do
 
     it 'returns pid if any' do
       mock(runner, :'`').with(anything).returns {
-        "ruby #{pid} ranmocy 12u IPv4 0x9c30720e04d31a0f 0t0 TCP *:#{port} (LISTEN)"
+        "ruby #{pid} ranmocy 12u IPv4 0x9c30720e04d31a0f 0t0 TCP *:#{default_port} (LISTEN)"
       }
       expect(runner.send(:unmanaged_pid)).to eq pid
     end

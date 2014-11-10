@@ -74,6 +74,7 @@ module Guard
           options[:debugger] ? '-u' : nil,
           '-e', options[:environment],
           '--pid', "\"#{pid_file}\"",
+          '-b', options[:host],
           '-p', options[:port],
           options[:server],
         ]
