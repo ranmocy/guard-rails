@@ -356,14 +356,13 @@ describe Guard::Rails::Runner do
 
       it 'kills the process with INT' do
         mock(runner).kill_process.with("INT", pid).returns { true }
-        mock(runner).wait_for_no_pid.once
+        stub(runner).sleep
         mock(runner).kill_process.with("KILL", pid).once
         runner.stop
       end
 
       it 'kills the process with KILL when INT not work' do
         mock(runner).kill_process.with("INT", pid).returns { false }
-        mock(runner).wait_for_no_pid.never
         mock(runner).kill_process.with("KILL", pid).once
         runner.stop
       end
