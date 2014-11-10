@@ -149,7 +149,7 @@ module Guard
 
       def remove_pid_file_and_wait_for_no_pid
         wait_for_pid_loop do
-          FileUtils.rm pid_file, :force => true
+          FileUtils.rm pid_file, force: true
           !has_pid?
         end
       end

@@ -6,7 +6,7 @@ describe Guard::Rails::Runner do
   let(:environment) { 'development' }
   let(:port) { 3000 }
 
-  let(:default_options) { { :environment => environment, :port => port } }
+  let(:default_options) { { environment: environment, port: port } }
   let(:options) { default_options }
 
   describe '#pid' do
@@ -32,7 +32,7 @@ describe Guard::Rails::Runner do
     end
 
     context 'when custom rails root given' do
-      let(:options) { default_options.merge(:root => 'spec/dummy') }
+      let(:options) { default_options.merge(root: 'spec/dummy') }
       let(:pid) { 12345 }
 
       before do
@@ -50,13 +50,13 @@ describe Guard::Rails::Runner do
   describe '#build_command' do
     context "with options[:CLI]" do
       let(:custom_cli) { 'custom_CLI_command' }
-      let(:options) { default_options.merge(:CLI => custom_cli) }
+      let(:options) { default_options.merge(CLI: custom_cli) }
       it "has customized CLI" do
         expect(runner.build_command).to match(%r{#{custom_cli} --pid })
       end
 
       let(:custom_pid_file) { "tmp/pids/rails_dev.pid" }
-      let(:options) { default_options.merge(:CLI => custom_cli, :pid_file => custom_pid_file) }
+      let(:options) { default_options.merge(CLI: custom_cli, pid_file: custom_pid_file) }
       it "uses customized pid_file" do
         pid_file_path = File.expand_path custom_pid_file
         expect(runner.build_command).to match(%r{#{custom_cli} --pid \"#{pid_file_path}\"})
@@ -70,7 +70,7 @@ describe Guard::Rails::Runner do
     end
 
     context "with options[:daemon]" do
-      let(:options) { default_options.merge(:daemon => true) }
+      let(:options) { default_options.merge(daemon: true) }
       it "has a daemon switch" do
         expect(runner.build_command).to match(%r{ -d})
       end
@@ -83,14 +83,14 @@ describe Guard::Rails::Runner do
     end
 
     context "with options[:environment] as test" do
-      let(:options) { default_options.merge(:environment => 'test') }
+      let(:options) { default_options.merge(environment: 'test') }
       it "has environment switch to test" do
         expect(runner.build_command).to match(%r{ -e test})
       end
     end
 
     context 'with options[:debugger]' do
-      let(:options) { default_options.merge(:debugger => true) }
+      let(:options) { default_options.merge(debugger: true) }
 
       it "has a debugger switch" do
         expect(runner.build_command).to match(%r{ -u})
@@ -98,7 +98,7 @@ describe Guard::Rails::Runner do
     end
 
     context 'with options[:server] as thin' do
-      let(:options) { default_options.merge(:server => 'thin') }
+      let(:options) { default_options.merge(server: 'thin') }
 
       it "has the server name thin" do
         expect(runner.build_command).to match(%r{thin})
@@ -114,7 +114,7 @@ describe Guard::Rails::Runner do
 
     context "with options[:pid_file]" do
       let(:custom_pid_file) { "tmp/pids/rails_dev.pid" }
-      let(:options) { default_options.merge(:pid_file => custom_pid_file) }
+      let(:options) { default_options.merge(pid_file: custom_pid_file) }
 
       it "uses customized pid_file" do
         pid_file_path = File.expand_path custom_pid_file
@@ -123,19 +123,19 @@ describe Guard::Rails::Runner do
     end
 
     context "with options[:zeus]" do
-      let(:options) { default_options.merge(:zeus => true) }
+      let(:options) { default_options.merge(zeus: true) }
       it "has zeus" do
         expect(runner.build_command).to match(%r{zeus server })
       end
 
       context "with options[:zeus_plan]" do
-        let(:options) { default_options.merge(:zeus => true, :zeus_plan => 'test_server') }
+        let(:options) { default_options.merge(zeus: true, zeus_plan: 'test_server') }
         it "uses customized zeus plan" do
           expect(runner.build_command).to match(%r{zeus test_server})
         end
 
         context "with options[:server]" do
-          let(:options) { default_options.merge(:zeus => true, :zeus_plan => 'test_server', :server => 'thin') }
+          let(:options) { default_options.merge(zeus: true, zeus_plan: 'test_server', server: 'thin') }
           it "uses customized server" do
             expect(runner.build_command).to match(%r{zeus test_server .* thin})
           end
@@ -148,14 +148,14 @@ describe Guard::Rails::Runner do
         expect(runner.build_command).to_not match(%r{zeus server })
       end
 
-      let(:options) { default_options.merge(:zeus_plan => 'test_server') }
+      let(:options) { default_options.merge(zeus_plan: 'test_server') }
       it "doesnt' have test_server" do
         expect(runner.build_command).to_not match(%r{test_server})
       end
     end
 
     context 'with options[:root]' do
-      let(:options) { default_options.merge(:root => 'spec/dummy') }
+      let(:options) { default_options.merge(root: 'spec/dummy') }
 
       it "has `cd` command with customized rails root" do
         expect(runner.build_command).to match(%r{cd .*/spec/dummy\" &&})
@@ -169,14 +169,14 @@ describe Guard::Rails::Runner do
     end
 
     context "with options[:environment] as test" do
-      let(:options) { default_options.merge(:environment => 'test') }
+      let(:options) { default_options.merge(environment: 'test') }
 
       it "sets RAILS_ENV to test" do
         expect(runner.environment["RAILS_ENV"]).to eq "test"
       end
 
       context "with options[:zeus]" do
-        let(:options) { default_options.merge(:zeus => true) }
+        let(:options) { default_options.merge(zeus: true) }
 
         it "sets RAILS_ENV to nil" do
           expect(runner.environment["RAILS_ENV"]).to be nil
@@ -216,13 +216,13 @@ describe Guard::Rails::Runner do
       end
 
       context 'with zeus' do
-        let(:options) { default_options.merge(:zeus => true) }
+        let(:options) { default_options.merge(zeus: true) }
         it_behaves_like "outside of bundler"
       end
 
       context 'with CLI' do
         let(:custom_cli) { 'custom_CLI_command' }
-        let(:options) { default_options.merge(:CLI => custom_cli) }
+        let(:options) { default_options.merge(CLI: custom_cli) }
         it_behaves_like "outside of bundler"
       end
     end
@@ -243,13 +243,13 @@ describe Guard::Rails::Runner do
       end
 
       context 'with zeus' do
-        let(:options) { default_options.merge(:zeus => true) }
+        let(:options) { default_options.merge(zeus: true) }
         it_behaves_like "outside of bundler"
       end
 
       context 'with CLI' do
         let(:custom_cli) { 'custom_CLI_command' }
-        let(:options) { default_options.merge(:CLI => custom_cli) }
+        let(:options) { default_options.merge(CLI: custom_cli) }
         it_behaves_like "outside of bundler"
       end
     end
@@ -276,7 +276,7 @@ describe Guard::Rails::Runner do
     end
 
     context 'with options[:force_run]' do
-      let(:options) { default_options.merge(:force_run => true) }
+      let(:options) { default_options.merge(force_run: true) }
 
       before do
         pid_stub.returns(true)
@@ -424,7 +424,7 @@ describe Guard::Rails::Runner do
 
   describe '#sleep_time' do
     let(:timeout) { 30 }
-    let(:options) { default_options.merge(:timeout => timeout) }
+    let(:options) { default_options.merge(timeout: timeout) }
 
     it "adjusts the sleep time as necessary" do
       expect(runner.sleep_time).to eq (timeout.to_f / Guard::Rails::Runner::MAX_WAIT_COUNT.to_f)

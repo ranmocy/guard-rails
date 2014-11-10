@@ -24,7 +24,7 @@ describe Guard::Rails do
     end
 
     context "doesn't start when Guard starts" do
-      let(:options) { { :start_on_start => false } }
+      let(:options) { { start_on_start: false } }
 
       it "shows the right message and doesn't run startup" do
         mock(guard).reload.never
@@ -44,13 +44,13 @@ describe Guard::Rails do
     context 'at start' do
       before do
         mock(Guard::UI).info.with('Starting Rails...')
-        mock(Guard::Notifier).notify.with(/Rails starting/, hash_including(:image => :pending))
+        mock(Guard::Notifier).notify.with(/Rails starting/, hash_including(image: :pending))
         any_instance_of(Guard::Rails::Runner, restart: true)
       end
 
       it "starts and shows the pid file" do
         mock(Guard::UI).info.with(/#{pid}/)
-        mock(Guard::Notifier).notify.with(/Rails started/, hash_including(:image => :success))
+        mock(Guard::Notifier).notify.with(/Rails started/, hash_including(image: :success))
 
         guard.reload("start")
       end
@@ -60,7 +60,7 @@ describe Guard::Rails do
       before do
         any_instance_of(Guard::Rails::Runner, pid: pid)
         mock(Guard::UI).info.with('Restarting Rails...')
-        mock(Guard::Notifier).notify.with(/Rails restarting/, hash_including(:image => :pending))
+        mock(Guard::Notifier).notify.with(/Rails restarting/, hash_including(image: :pending))
       end
 
       context "with pid file" do
@@ -70,7 +70,7 @@ describe Guard::Rails do
 
         it "restarts and shows the pid file" do
           mock(Guard::UI).info.with(/#{pid}/)
-          mock(Guard::Notifier).notify.with(/Rails restarted/, hash_including(:image => :success))
+          mock(Guard::Notifier).notify.with(/Rails restarted/, hash_including(image: :success))
 
           guard.reload
         end
@@ -84,7 +84,7 @@ describe Guard::Rails do
         it "restarts and shows the pid file" do
           mock(Guard::UI).info.with(/#{pid}/).never
           mock(Guard::UI).info.with(/Rails NOT restarted/)
-          mock(Guard::Notifier).notify.with(/Rails NOT restarted/, hash_including(:image => :failed))
+          mock(Guard::Notifier).notify.with(/Rails NOT restarted/, hash_including(image: :failed))
 
           guard.reload
         end
