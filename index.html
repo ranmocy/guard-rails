@@ -29,40 +29,39 @@
       </header>
       <section>
         <h1>
-<a name="guard-rails-is-watching-on-your-railses" class="anchor" href="#guard-rails-is-watching-on-your-railses"><span class="octicon octicon-link"></span></a>Guard-rails is watching on your railses!</h1>
+<a id="guard-rails-is-watching-on-your-railses" class="anchor" href="#guard-rails-is-watching-on-your-railses" aria-hidden="true"><span class="octicon octicon-link"></span></a>Guard-rails is watching on your railses!</h1>
 
 <p><a href="http://badge.fury.io/rb/guard-rails"><img src="https://badge.fury.io/rb/guard-rails.png" alt="Gem Version"></a>
 <a href="https://travis-ci.org/ranmocy/guard-rails"><img src="https://travis-ci.org/ranmocy/guard-rails.png" alt="Build Status"></a>
 <a href="https://gemnasium.com/ranmocy/guard-rails"><img src="https://gemnasium.com/ranmocy/guard-rails.png" alt="Dependency Status"></a>
-<a href="https://codeclimate.com/github/ranmocy/guard-rails"><img src="https://codeclimate.com/github/ranmocy/guard-rails.png" alt="Code Climate"></a></p>
+<a href="https://codeclimate.com/github/ranmocy/guard-rails"><img src="https://codeclimate.com/github/ranmocy/guard-rails.png" alt="Code Climate"></a>
+<a href="https://codeclimate.com/github/ranmocy/guard-rails"><img src="https://codeclimate.com/github/ranmocy/guard-rails/badges/coverage.svg" alt="Test Coverage"></a></p>
 
 <h2>
-<a name="main-repository" class="anchor" href="#main-repository"><span class="octicon octicon-link"></span></a>Main repository</h2>
+<a id="main-repository" class="anchor" href="#main-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Main repository</h2>
 
 <p>Currently, the official fork repository is at <a href="http://github.com/ranmocy/guard-rails">ranmocy/guard-rails</a>.
 Please, come here and communicate with me.</p>
 
 <h2>
-<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
 
 <p>Please make sure to have <a href="https://github.com/guard/guard">Guard</a> installed before continuing.</p>
 
 <p>Add Guard::Rails to your <code>Gemfile</code>:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
-  <span class="n">gem</span> <span class="s1">'guard-rails'</span>
-<span class="k">end</span>
-</pre></div>
+<div class="highlight highlight-ruby"><pre>group <span class="pl-cos"><span class="pl-pdc1">:</span>development</span> <span class="pl-k">do</span>
+  <span class="pl-mr"><span class="pl-kos">gem</span> <span class="pl-s1"><span class="pl-pds">'</span>guard-rails<span class="pl-pds">'</span></span></span>
+<span class="pl-k">end</span></pre></div>
 
 <p>Add the default Guard::Rails template to your <code>Guardfile</code> by running:</p>
 
-<div class="highlight highlight-bash"><pre><span class="nv">$ </span>guard init rails
-</pre></div>
+<div class="highlight highlight-bash"><pre>$ guard init rails</pre></div>
 
 <p>Now I can automatically restart your Rails development server as your files change!</p>
 
 <h2>
-<a name="lots-of-fun-options-growing" class="anchor" href="#lots-of-fun-options-growing"><span class="octicon octicon-link"></span></a>Lots of fun options growing!</h2>
+<a id="lots-of-fun-options-growing" class="anchor" href="#lots-of-fun-options-growing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lots of fun options growing!</h2>
 
 <ul>
 <li>
@@ -75,6 +74,8 @@ Please, come here and communicate with me.</p>
 <code>:force_run</code> kills any process that's holding the listen port before attempting to (re)start Rails (<strong>default <code>false</code></strong>)</li>
 <li>
 <code>:pid_file</code> specify your pid_file (<strong>default <code>tmp/pids/[RAILS_ENV].pid</code></strong>)</li>
+<li>
+<code>:host</code> is where the server is hosted (<strong>default <code>localhost</code></strong>)</li>
 <li>
 <code>:port</code> is the server port number (<strong>default <code>3000</code></strong>)</li>
 <li>
@@ -91,8 +92,10 @@ Please, come here and communicate with me.</p>
 <code>:zeus</code> support <a href="https://github.com/burke/zeus">zeus</a> to boost rails init speed (<strong>default <code>false</code></strong>).</li>
 <li>
 <code>:CLI</code> construct the runner command as you will! Will omit all options above except <code>pid_file</code>! (<strong>default <code>rails server --pid tmp/pids/[RAILS_ENV].pid</code></strong>)</li>
-</ul><h2>
-<a name="how-to" class="anchor" href="#how-to"><span class="octicon octicon-link"></span></a>How-to</h2>
+</ul>
+
+<h2>
+<a id="how-to" class="anchor" href="#how-to" aria-hidden="true"><span class="octicon octicon-link"></span></a>How-to</h2>
 
 <ul>
 <li>
@@ -101,8 +104,10 @@ Please, come here and communicate with me.</p>
 <strong>Avoid multiple autoruns when editing by VIM and Emacs</strong> move the backup files to somewhere else or just ignore them in Guardfile.</li>
 <li>
 <strong>Use binding.pry in Rails</strong> Actually you can't! See discussion <a href="https://github.com/ranmocy/guard-rails/issues/24">here</a>.</li>
-</ul><h2>
-<a name="philosophy" class="anchor" href="#philosophy"><span class="octicon octicon-link"></span></a>Philosophy</h2>
+</ul>
+
+<h2>
+<a id="philosophy" class="anchor" href="#philosophy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Philosophy</h2>
 
 <ul>
 <li>
@@ -110,8 +115,10 @@ Please, come here and communicate with me.</p>
 <li>
 <strong>Live on the edge</strong> Ruby 1.8.7 has been deprecated. Guard-Rails will be tested under Ruby 1.9.3, 2.0.0 with newest gems. Will be rewrited with features of Ruby 2.0.0 as version 1.0.0.</li>
 <li><a href="http://semver.org/">Semantic Version</a></li>
-</ul><h2>
-<a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute</h2>
+</ul>
+
+<h2>
+<a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h2>
 
 <p>The best way to contact me is the Issues and Pull Request system on GitHub.
 Currently the official fork repository is at <a href="http://github.com/ranmocy/guard-rails">ranmocy/guard-rails</a>.</p>
@@ -120,7 +127,7 @@ Currently the official fork repository is at <a href="http://github.com/ranmocy/
 And I will be there as your call.</p>
 
 <h2>
-<a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h2>
+<a id="contributors" class="anchor" href="#contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributors</h2>
 
 <ul>
 <li>Ranmocy Sheng</li>
@@ -130,6 +137,7 @@ And I will be there as your call.</p>
 <li>Sidney Burks</li>
 <li>Paul Schyska</li>
 <li>Adam Michel</li>
+<li>Cezary Baginski</li>
 <li>Nathan Broadbent</li>
 <li>Tim Preston</li>
 <li>killphi</li>
@@ -139,8 +147,10 @@ And I will be there as your call.</p>
 <li>Michel Pavan Macedo</li>
 <li>Benjamin Sullivan</li>
 <li>Johnny Robeson</li>
-</ul><h2>
-<a name="copyright" class="anchor" href="#copyright"><span class="octicon octicon-link"></span></a>Copyright</h2>
+</ul>
+
+<h2>
+<a id="copyright" class="anchor" href="#copyright" aria-hidden="true"><span class="octicon octicon-link"></span></a>Copyright</h2>
 
 <p>Guard-rails is under <strong><a href="http://ranmocy.info/piece/FYHPL.txt">FOLLOW YOUR HEART PUBLIC LICENSE</a></strong> version 1.</p>
       </section>
