@@ -166,7 +166,7 @@ module Guard
 
       def kill_process(signal, pid)
         begin
-          Process.kill(signal, pid)
+          ::Process.kill(signal, pid)
           true
         rescue Errno::EPERM
           UI.info "[Guard::Rails::Error] Don't have permission to KILL!"
