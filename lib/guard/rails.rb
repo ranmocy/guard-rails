@@ -1,6 +1,4 @@
-require 'guard'
-require 'guard/plugin'
-require 'rbconfig'
+require 'guard/compat/plugin'
 
 module Guard
   class Rails < Plugin
