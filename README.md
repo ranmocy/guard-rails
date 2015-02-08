@@ -80,11 +80,13 @@ And I will be there as your call.
 * Nathan Broadbent
 * Tim Preston
 * killphi
+* Benjamin Sullivan
 * Grant Hutchins and Jonathan Mukai-Heidt
 * Everard Brown
+* Sho Kusano
 * Darrin Holst
+* Luciano Sousa
 * Michel Pavan Macedo
-* Benjamin Sullivan
 * Johnny Robeson
 
 ## Copyright
