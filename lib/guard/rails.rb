@@ -4,9 +4,6 @@ module Guard
   class Rails < Plugin
     require 'guard/rails/runner'
 
-    # Use gem `version` to support versioning
-    # is_versioned
-
     attr_reader :options, :runner
 
     DEFAULT_OPTIONS = {
