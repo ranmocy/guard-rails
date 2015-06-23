@@ -91,10 +91,10 @@ And I will be there as your call.
 
 ## Copyright
 
-Guard-rails is under **[FOLLOW YOUR HEART PUBLIC LICENSE][FYHPL]** version 1.
+Guard-rails is under **[MIT license][MIT]**.
 
 [ranmocy-guard-rails]: http://github.com/ranmocy/guard-rails
 [guard]: https://github.com/guard/guard
 [zeus]: https://github.com/burke/zeus
 [zeus-custom-plan]: https://github.com/burke/zeus/blob/master/docs/ruby/modifying.md
-[FYHPL]: http://ranmocy.info/piece/FYHPL.txt
+[MIT]: http://opensource.org/licenses/MIT
