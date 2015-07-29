@@ -18,7 +18,7 @@ Add Guard::Rails to your `Gemfile`:
 
 ```ruby
 group :development do
-  gem 'guard-rails'
+  gem 'guard-rails', require: false
 end
 ```
 
