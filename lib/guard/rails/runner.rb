@@ -14,6 +14,7 @@ module Guard
 
       def start
         kill_unmanaged_pid! if options[:force_run]
+        wait_for_zeus if options[:zeus]
         run_rails_command!
         wait_for_pid
       end
@@ -65,6 +66,11 @@ module Guard
         options[:timeout].to_f / MAX_WAIT_COUNT.to_f
       end
 
+      def wait_for_zeus
+        sleep(1) until File.exist?(zeus_sockfile)
+        File.exist?(zeus_sockfile)
+      end
+
       private
 
       # command builders
@@ -84,6 +90,10 @@ module Guard
 
       def build_cli_command
         "#{options[:CLI]} --pid \"#{pid_file}\""
+      end
+
+      def zeus_sockfile
+        File.join(Dir.pwd, '.zeus.sock')
       end
 
       def build_zeus_command

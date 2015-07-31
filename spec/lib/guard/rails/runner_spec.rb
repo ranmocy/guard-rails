@@ -463,4 +463,20 @@ describe Guard::Rails::Runner do
       expect(runner.sleep_time).to eq (timeout.to_f / Guard::Rails::Runner::MAX_WAIT_COUNT.to_f)
     end
   end
+
+  describe '#wait_for_zeus' do
+    context 'with options[:zeus]' do
+      before do
+        FileUtils.touch File.join(Dir.pwd, '.zeus.sock')
+      end
+
+      after do
+        FileUtils.rm File.join(Dir.pwd, '.zeus.sock')
+      end
+
+      it "waits until the zeus socket file to be present" do
+        expect(runner.wait_for_zeus).to be true
+      end
+    end
+  end
 end
