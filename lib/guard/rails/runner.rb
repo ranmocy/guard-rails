@@ -14,7 +14,11 @@ module Guard
 
       def start
         kill_unmanaged_pid! if options[:force_run]
-        wait_for_zeus if options[:zeus]
+
+        if options[:zeus] && !wait_for_zeus
+          UI.info "[Guard::Rails::Error] Could not find zeus socket file."
+        end
+
         run_rails_command!
         wait_for_pid
       end
@@ -67,11 +71,21 @@ module Guard
       end
 
       def wait_for_zeus
-        sleep(1) until File.exist?(zeus_sockfile)
+        timeout = 0
+
+        loop do
+          break if File.exist?(zeus_sockfile) || timeout == zeus_wait_timeout
+          timeout += sleep(1)
+        end
+
         File.exist?(zeus_sockfile)
       end
 
       private
+
+      def zeus_wait_timeout
+        15
+      end
 
       # command builders
       def build_options
