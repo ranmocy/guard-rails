@@ -360,7 +360,7 @@ describe Guard::Rails::Runner do
       context 'when zeus socket file is present' do
         before do
           mock(runner).sleep(1).never
-          mock(File).exist?(File.join(Dir.pwd, '.zeus.sock')) { true }.twice
+          mock(File).exist?(File.join(Dir.pwd, '.zeus.sock')) { true }.once
         end
 
         it "doesn't wait for zeus" do

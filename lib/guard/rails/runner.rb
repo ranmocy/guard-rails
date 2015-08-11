@@ -4,7 +4,6 @@ module Guard
   class Rails
     class Runner
       MAX_WAIT_COUNT = 10
-      ZEUS_WAIT_TIMEOUT = 15
 
       attr_reader :options
 
@@ -73,13 +72,7 @@ module Guard
       end
 
       def wait_for_zeus
-        elapsed_time = 0
-
-        while not File.exist?(zeus_sockfile) and elapsed_time < ZEUS_WAIT_TIMEOUT
-          elapsed_time += sleep(1)
-        end
-
-        File.exist?(zeus_sockfile)
+        wait_for_loop { File.exist?(zeus_sockfile) }
       end
 
       private
@@ -101,10 +94,6 @@ module Guard
 
       def build_cli_command
         "#{options[:CLI]} --pid \"#{pid_file}\""
-      end
-
-      def zeus_sockfile
-        File.join(@root, '.zeus.sock')
       end
 
       def build_zeus_command
@@ -160,21 +149,21 @@ module Guard
       end
 
       def wait_for_pid
-        wait_for_pid_loop { has_pid? }
+        wait_for_loop { has_pid? }
       end
 
       def wait_for_no_pid
-        wait_for_pid_loop { !has_pid? }
+        wait_for_loop { !has_pid? }
       end
 
       def remove_pid_file_and_wait_for_no_pid
-        wait_for_pid_loop do
+        wait_for_loop do
           FileUtils.rm pid_file, force: true
           !has_pid?
         end
       end
 
-      def wait_for_pid_loop
+      def wait_for_loop
         count = 0
         while !yield && count < MAX_WAIT_COUNT
           wait_for_pid_action
@@ -199,6 +188,10 @@ module Guard
         Integer(File.read(pid_file))
       rescue ArgumentError
         nil
+      end
+
+      def zeus_sockfile
+        File.join(@root, '.zeus.sock')
       end
 
     end
