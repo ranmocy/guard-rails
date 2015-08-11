@@ -291,47 +291,91 @@ describe Guard::Rails::Runner do
     let(:kill_expectation) { mock(runner).kill_unmanaged_pid! }
     let(:pid_stub) { stub(runner).has_pid? }
 
-    before do
-      mock(runner).run_rails_command!.once
-    end
-
-    context 'without options[:force_run]' do
+    context 'without options[:zeus]' do
       before do
-        pid_stub.returns(true)
-        kill_expectation.never
-        mock(runner).wait_for_pid_action.never
+        mock(runner).wait_for_zeus.never
+        mock(runner).run_rails_command!.once
       end
 
-      it "starts as normal" do
-        expect(runner.start).to be true
+      context 'without options[:force_run]' do
+        before do
+          pid_stub.returns(true)
+          kill_expectation.never
+          mock(runner).wait_for_pid_action.never
+        end
+
+        it "starts as normal" do
+          expect(runner.start).to be true
+        end
+      end
+
+      context 'with options[:force_run]' do
+        let(:options) { default_options.merge(force_run: true) }
+
+        before do
+          pid_stub.returns(true)
+          kill_expectation.once
+          mock(runner).wait_for_pid_action.never
+        end
+
+        it "starts as normal" do
+          expect(runner.start).to be true
+        end
+      end
+
+      context "doesn't write the pid" do
+        before do
+          pid_stub.returns(false)
+          kill_expectation.never
+          mock(runner).wait_for_pid_action.times(Guard::Rails::Runner::MAX_WAIT_COUNT)
+        end
+
+        it "doesn't start" do
+          expect(runner.start).to be false
+        end
       end
     end
 
-    context 'with options[:force_run]' do
-      let(:options) { default_options.merge(force_run: true) }
+    context 'with options[:zeus]' do
+      let(:options) { default_options.merge(zeus: true) }
 
-      before do
-        pid_stub.returns(true)
-        kill_expectation.once
-        mock(runner).wait_for_pid_action.never
+      context 'when zeus socket file is absent' do
+        before do
+          stub(runner).sleep { 1 }
+          mock(File).exist?(File.join(Dir.pwd, '.zeus.sock')) { false }.at_least(1)
+        end
+
+        it "waits for zeus" do
+          expect(runner.wait_for_zeus).to be false
+        end
+
+        it 'returns false' do
+          mock(Guard::UI).info("[Guard::Rails::Error] Could not find zeus socket file.")
+          mock(runner).run_rails_command!.never
+          mock(runner).wait_for_pid.never
+          expect(runner.start).to be false
+        end
       end
 
-      it "starts as normal" do
-        expect(runner.start).to be true
+      context 'when zeus socket file is present' do
+        before do
+          mock(runner).sleep(1).never
+          mock(File).exist?(File.join(Dir.pwd, '.zeus.sock')) { true }.twice
+        end
+
+        it "doesn't wait for zeus" do
+          expect(runner.wait_for_zeus).to be true
+        end
+
+        it 'returns true' do
+          # mock(runner).wait_for_zeus { true }
+          mock(runner).run_rails_command!.once
+          mock(runner).wait_for_pid.once { true }
+          expect(runner.start).to be true
+        end
       end
     end
 
-    context "doesn't write the pid" do
-      before do
-        pid_stub.returns(false)
-        kill_expectation.never
-        mock(runner).wait_for_pid_action.times(Guard::Rails::Runner::MAX_WAIT_COUNT)
-      end
-
-      it "doesn't start" do
-        expect(runner.start).to be false
-      end
-    end
   end
 
   describe '#stop' do
@@ -464,19 +508,4 @@ describe Guard::Rails::Runner do
     end
   end
 
-  describe '#wait_for_zeus' do
-    context 'with options[:zeus]' do
-      before do
-        FileUtils.touch File.join(Dir.pwd, '.zeus.sock')
-      end
-
-      after do
-        FileUtils.rm File.join(Dir.pwd, '.zeus.sock')
-      end
-
-      it "waits until the zeus socket file to be present" do
-        expect(runner.wait_for_zeus).to be true
-      end
-    end
-  end
 end

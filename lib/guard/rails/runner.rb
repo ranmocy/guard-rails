@@ -4,6 +4,7 @@ module Guard
   class Rails
     class Runner
       MAX_WAIT_COUNT = 10
+      ZEUS_WAIT_TIMEOUT = 15
 
       attr_reader :options
 
@@ -17,6 +18,7 @@ module Guard
 
         if options[:zeus] && !wait_for_zeus
           UI.info "[Guard::Rails::Error] Could not find zeus socket file."
+          return false
         end
 
         run_rails_command!
@@ -71,21 +73,16 @@ module Guard
       end
 
       def wait_for_zeus
-        timeout = 0
+        elapsed_time = 0
 
-        loop do
-          break if File.exist?(zeus_sockfile) || timeout == zeus_wait_timeout
-          timeout += sleep(1)
+        while not File.exist?(zeus_sockfile) and elapsed_time < ZEUS_WAIT_TIMEOUT
+          elapsed_time += sleep(1)
         end
 
         File.exist?(zeus_sockfile)
       end
 
       private
-
-      def zeus_wait_timeout
-        15
-      end
 
       # command builders
       def build_options
@@ -107,7 +104,7 @@ module Guard
       end
 
       def zeus_sockfile
-        File.join(Dir.pwd, '.zeus.sock')
+        File.join(@root, '.zeus.sock')
       end
 
       def build_zeus_command
@@ -161,8 +158,6 @@ module Guard
         }
         nil
       end
-
-      private
 
       def wait_for_pid
         wait_for_pid_loop { has_pid? }
