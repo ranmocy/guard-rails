@@ -191,7 +191,14 @@ module Guard
       end
 
       def zeus_sockfile
-        File.join(@root, '.zeus.sock')
+        return @zeus_sockfile_path unless @zeus_sockfile_path.nil?
+        root_sockfile_path = File.join @root, '.zeus.sock'
+        @zeus_sockfile_path = if File.exist?(root_sockfile_path)
+                                root_sockfile_path
+                              else
+                                pwd_sockfile_path = File.join Dir.pwd, '.zeus.sock'
+                                pwd_sockfile_path if File.exist?(pwd_sockfile_path)
+                              end
       end
 
     end
