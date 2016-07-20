@@ -1,8 +1,8 @@
 rvm:
   - 2.2.3
   - 2.3.0
-  - jruby
-script: "bundle exec rake spec"
+  - jruby-9.0.5.0
+script: "bundle && bundle exec rake spec"
 addons:
   code_climate:
     repo_token: 2188902454f0733604836cd02e84f17634b7a49e337269905e0757051db2e3ca
