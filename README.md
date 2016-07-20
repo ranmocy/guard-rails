@@ -28,6 +28,14 @@ Add the default Guard::Rails template to your `Guardfile` by running:
 $ guard init rails
 ```
 
+Add options in Guardfile
+```rb
+guard :rails, port: 3000, host: '0.0.0.0' do
+  watch('Gemfile.lock')
+  watch(%r{^(config|lib)/.*})
+end
+```
+
 Now I can automatically restart your Rails development server as your files change!
 
 ## Lots of fun options growing!
