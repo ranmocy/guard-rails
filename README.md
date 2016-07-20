@@ -56,7 +56,7 @@ Now I can automatically restart your Rails development server as your files chan
 ## Philosophy
 
 * **All Platforms** MRI is the main test case. But will be tested under REE and JRuby.
-* **Live on the edge** Ruby 1.8.7 has been deprecated. Guard-Rails will be tested under Ruby 1.9.3, 2.0.0 with newest gems. Will be rewrited with features of Ruby 2.0.0 as version 1.0.0.
+* **Live on the edge** Guard-Rails will be tested under Ruby 2.2.3 to 2.3.0 with newest gems.
 * [Semantic Version](http://semver.org/)
 
 ## Contribute

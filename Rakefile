@@ -8,14 +8,14 @@ require 'rake/version_task'
 Rake::VersionTask.new
 
 include Rake::DSL if defined?(Rake::DSL)
-RVM_PREFIX = "rvm jruby,1.9.3,2.0.0 do"
+RVM_DO_ALL = "rvm all do"
 
 
 namespace :spec do
   desc "Run on three Rubies"
   task :platforms do
-    exit $?.exitstatus unless system "#{RVM_PREFIX} bundle install 2>&1 1>/dev/null "
-    exit $?.exitstatus unless system "#{RVM_PREFIX} bundle exec rake spec"
+    exit $?.exitstatus unless system "#{RVM_DO_ALL} bundle install 2>&1 1>/dev/null "
+    exit $?.exitstatus unless system "#{RVM_DO_ALL} bundle exec rake spec"
   end
 end
 

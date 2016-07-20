@@ -65,7 +65,6 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    rr (1.1.2)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
@@ -101,15 +100,16 @@ PLATFORMS
 
 DEPENDENCIES
   codeclimate-test-reporter
-  fakefs (~> 0.5)
-  guard
+  fakefs
   guard-bundler
   guard-rails!
   guard-rspec
   libnotify
   rake
-  rr (~> 1.0)
-  rspec (~> 3.0)
+  rspec
   terminal-notifier
   terminal-notifier-guard
-  version (>= 1.0.0)
+  version
+
+BUNDLED WITH
+   1.12.5

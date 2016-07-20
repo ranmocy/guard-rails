@@ -4,8 +4,11 @@ gemspec
 
 # Development tools
 group :development do
+  gem 'rspec'
+  gem 'fakefs'
+  gem 'version'
+
   gem 'rake'
-  gem 'guard'
   gem 'guard-bundler'
   gem 'guard-rspec'
 

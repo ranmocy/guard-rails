@@ -16,12 +16,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.required_ruby_version = '>= 1.9'
+  s.required_ruby_version = '>= 2.2.3'
 
   s.add_dependency 'guard', '~> 2.11'
   s.add_dependency('guard-compat', '~> 1.0')
-
-  s.add_development_dependency 'rspec', '~> 3.0'
-  s.add_development_dependency 'fakefs', '~> 0.5'
-  s.add_development_dependency 'version', '>= 1.0.0'
 end
