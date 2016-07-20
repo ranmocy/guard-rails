@@ -220,7 +220,7 @@ describe Guard::Rails::Runner do
   describe '#run_rails_command' do
     before do
       @bundler_env = ENV['BUNDLE_GEMFILE']
-      stub(runner).build_command.returns("printenv BUNDLE_GEMFILE > /dev/null")
+      allow(runner).to receive(:build_command).and_return("printenv BUNDLE_GEMFILE > /dev/null")
     end
     after do
       ENV['BUNDLE_GEMFILE'] = @bundler_env
@@ -288,20 +288,18 @@ describe Guard::Rails::Runner do
   end
 
   describe '#start' do
-    let(:kill_expectation) { mock(runner).kill_unmanaged_pid! }
-    let(:pid_stub) { stub(runner).has_pid? }
 
     context 'without options[:zeus]' do
       before do
-        mock(runner).wait_for_zeus.never
-        mock(runner).run_rails_command!.once
+        expect(runner).to receive(:wait_for_zeus).never
+        expect(runner).to receive(:run_rails_command!).once
       end
 
       context 'without options[:force_run]' do
         before do
-          pid_stub.returns(true)
-          kill_expectation.never
-          mock(runner).wait_for_pid_action.never
+          allow(runner).to receive(:has_pid?).and_return(true)
+          expect(runner).to receive(:kill_unmanaged_pid!).never
+          expect(runner).to receive(:wait_for_pid_action).never
         end
 
         it "starts as normal" do
@@ -313,9 +311,9 @@ describe Guard::Rails::Runner do
         let(:options) { default_options.merge(force_run: true) }
 
         before do
-          pid_stub.returns(true)
-          kill_expectation.once
-          mock(runner).wait_for_pid_action.never
+          allow(runner).to receive(:has_pid?).and_return(true)
+          expect(runner).to receive(:kill_unmanaged_pid!).once
+          expect(runner).to receive(:wait_for_pid_action).never
         end
 
         it "starts as normal" do
@@ -325,9 +323,9 @@ describe Guard::Rails::Runner do
 
       context "doesn't write the pid" do
         before do
-          pid_stub.returns(false)
-          kill_expectation.never
-          mock(runner).wait_for_pid_action.times(Guard::Rails::Runner::MAX_WAIT_COUNT)
+          allow(runner).to receive(:has_pid?).and_return(false)
+          expect(runner).to receive(:kill_unmanaged_pid!).never
+          expect(runner).to receive(:wait_for_pid_action).exactly(Guard::Rails::Runner::MAX_WAIT_COUNT).times
         end
 
         it "doesn't start" do
@@ -341,8 +339,8 @@ describe Guard::Rails::Runner do
 
       context 'when zeus socket file is absent' do
         before do
-          stub(runner).sleep { 1 }
-          mock(File).exist?(File.join(Dir.pwd, '.zeus.sock')) { false }.at_least(1)
+          allow(runner).to receive(:sleep).and_return(1)
+          expect(File).to receive(:exist?).with(File.join(Dir.pwd, '.zeus.sock')).and_return(false).at_least(1)
         end
 
         it "waits for zeus" do
@@ -350,17 +348,17 @@ describe Guard::Rails::Runner do
         end
 
         it 'returns false' do
-          mock(Guard::UI).info("[Guard::Rails::Error] Could not find zeus socket file.")
-          mock(runner).run_rails_command!.never
-          mock(runner).wait_for_pid.never
+          expect(Guard::UI).to receive(:info).with("[Guard::Rails::Error] Could not find zeus socket file.")
+          expect(runner).to receive(:run_rails_command!).never
+          expect(runner).to receive(:wait_for_pid).never
           expect(runner.start).to be false
         end
       end
 
       context 'when zeus socket file is present' do
         before do
-          mock(runner).sleep(1).never
-          mock(File).exist?(File.join(Dir.pwd, '.zeus.sock')) { true }.once
+          expect(runner).to receive(:sleep).never
+          expect(File).to receive(:exist?).with(File.join(Dir.pwd, '.zeus.sock')).and_return(true).once
         end
 
         it "doesn't wait for zeus" do
@@ -368,9 +366,9 @@ describe Guard::Rails::Runner do
         end
 
         it 'returns true' do
-          # mock(runner).wait_for_zeus { true }
-          mock(runner).run_rails_command!.once
-          mock(runner).wait_for_pid.once { true }
+          # expect(runner).to receive(:wait_for_zeus).and_return(true)
+          expect(runner).to receive(:run_rails_command!).once
+          expect(runner).to receive(:wait_for_pid).and_return(true).once
           expect(runner.start).to be true
         end
       end
@@ -399,23 +397,23 @@ describe Guard::Rails::Runner do
       end
 
       it 'kills the process with INT' do
-        mock(runner).kill_process.with("INT", pid).returns { true }
-        stub(runner).sleep
-        mock(runner).kill_process.with("KILL", pid).once
+        expect(runner).to receive(:kill_process).with("INT", pid).and_return(true)
+        allow(runner).to receive(:sleep)
+        expect(runner).to receive(:kill_process).with("KILL", pid).once
         runner.stop
       end
 
       it 'kills the process with KILL when INT not work' do
-        mock(runner).kill_process.with("INT", pid).returns { false }
-        mock(runner).kill_process.with("KILL", pid).once
+        expect(runner).to receive(:kill_process).with("INT", pid).and_return(false)
+        expect(runner).to receive(:kill_process).with("KILL", pid).once
         runner.stop
       end
     end
 
     context "when pid file doesn't exist" do
       it 'does nothing' do
+        expect(runner).to receive(:kill_process).never
         runner.stop
-        mock(runner).kill_process.never
       end
     end
 
@@ -426,7 +424,7 @@ describe Guard::Rails::Runner do
       end
 
       it 'does nothing' do
-        mock(runner).kill_process.never
+        expect(runner).to receive(:kill_process).never
         runner.stop
       end
 
@@ -440,8 +438,8 @@ describe Guard::Rails::Runner do
 
   describe '#restart' do
     it 'calls stop and start' do
-      mock(runner).stop.once
-      mock(runner).start.once
+      expect(runner).to receive(:stop).once
+      expect(runner).to receive(:start).once
       runner.restart
     end
   end
@@ -450,14 +448,14 @@ describe Guard::Rails::Runner do
     let(:pid) { 12345 }
 
     it 'kill processes if any' do
-      mock(runner).unmanaged_pid.returns { pid }
-      mock(runner).kill_process.with("KILL", pid).once
+      expect(runner).to receive(:unmanaged_pid).and_return(pid)
+      expect(runner).to receive(:kill_process).with("KILL", pid).once
       runner.send(:kill_unmanaged_pid!)
     end
 
     it 'does nothing if none' do
-      mock(runner).unmanaged_pid.returns { nil }
-      mock(runner).kill_process.with("KILL", pid).never
+      expect(runner).to receive(:unmanaged_pid).and_return(nil)
+      expect(runner).to receive(:kill_process).with("KILL", pid).never
       runner.send(:kill_unmanaged_pid!)
     end
   end
@@ -466,14 +464,14 @@ describe Guard::Rails::Runner do
     let(:pid) { 12345 }
 
     it 'returns pid if any' do
-      mock(runner, :'`').with(anything).returns {
+      expect(runner).to receive(:'`').with(anything) {
         "ruby #{pid} ranmocy 12u IPv4 0x9c30720e04d31a0f 0t0 TCP *:#{default_port} (LISTEN)"
       }
       expect(runner.send(:unmanaged_pid)).to eq pid
     end
 
     it 'returns nil if none' do
-      mock(runner, :'`').with(anything).returns { "\n" }
+      expect(runner).to receive(:'`').with(anything).and_return("\n")
       expect(runner.send(:unmanaged_pid)).to be nil
     end
   end
@@ -484,7 +482,7 @@ describe Guard::Rails::Runner do
     let(:pid) { 12345 }
 
     it 'returns true if killed' do
-      mock(Process).kill(signal, pid) { 0 }
+      expect(Process).to receive(:kill).with(signal, pid).and_return(0)
       expect(runner.send(:kill_process, signal, pid)).to be true
     end
 
@@ -493,8 +491,8 @@ describe Guard::Rails::Runner do
     end
 
     it 'returns false if no permission to kill' do
-      mock(Process).kill(signal, pid) { raise Errno::EPERM }
-      mock(Guard::UI).info("[Guard::Rails::Error] Don't have permission to KILL!")
+      expect(Process).to receive(:kill).with(signal, pid).and_raise(Errno::EPERM)
+      expect(Guard::UI).to receive(:info).with("[Guard::Rails::Error] Don't have permission to KILL!")
       expect(runner.send(:kill_process, signal, pid)).to be false
     end
   end

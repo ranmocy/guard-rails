@@ -14,12 +14,14 @@ describe Guard::Rails do
   end
 
   describe "#start" do
-    let(:ui_expectation) { mock(Guard::UI).info.with(/#{Guard::Rails::DEFAULT_OPTIONS[:port]}/) }
+    let(:expect_ui_update) {
+      expect(Guard::UI).to receive(:info).with(/#{Guard::Rails::DEFAULT_OPTIONS[:port]}/)
+    }
 
     context "starts when Guard starts" do
       it "shows the right message and runs startup" do
-        mock(guard).reload.with("start").once
-        ui_expectation
+        expect(guard).to receive(:reload).with("start").once
+        expect_ui_update
         guard.start
       end
     end
@@ -28,8 +30,8 @@ describe Guard::Rails do
       let(:options) { { start_on_start: false } }
 
       it "shows the right message and doesn't run startup" do
-        mock(guard).reload.never
-        ui_expectation
+        expect(guard).to receive(:reload).never
+        expect_ui_update
         guard.start
       end
     end
@@ -39,19 +41,19 @@ describe Guard::Rails do
     let(:pid) { '12345' }
 
     before do
-      any_instance_of(Guard::Rails::Runner, pid: pid)
+      allow_any_instance_of(Guard::Rails::Runner).to receive(:pid).and_return(pid)
     end
 
     context 'at start' do
       before do
-        mock(Guard::UI).info.with('Starting Rails...')
-        mock(Guard::Notifier).notify.with(/Rails starting/, hash_including(image: :pending))
-        any_instance_of(Guard::Rails::Runner, restart: true)
+        expect(Guard::UI).to receive(:info).with('Starting Rails...')
+        expect(Guard::Notifier).to receive(:notify).with(/Rails starting/, hash_including(image: :pending))
+        allow_any_instance_of(Guard::Rails::Runner).to receive(:restart).and_return(true)
       end
 
       it "starts and shows the pid file" do
-        mock(Guard::UI).info.with(/#{pid}/)
-        mock(Guard::Notifier).notify.with(/Rails started/, hash_including(image: :success))
+        expect(Guard::UI).to receive(:info).with(/#{pid}/)
+        expect(Guard::Notifier).to receive(:notify).with(/Rails started/, hash_including(image: :success))
 
         guard.reload("start")
       end
@@ -59,19 +61,19 @@ describe Guard::Rails do
 
     context "after start" do
       before do
-        any_instance_of(Guard::Rails::Runner, pid: pid)
-        mock(Guard::UI).info.with('Restarting Rails...')
-        mock(Guard::Notifier).notify.with(/Rails restarting/, hash_including(image: :pending))
+        allow_any_instance_of(Guard::Rails::Runner).to receive(:pid).and_return(pid)
+        expect(Guard::UI).to receive(:info).with('Restarting Rails...')
+        expect(Guard::Notifier).to receive(:notify).with(/Rails restarting/, hash_including(image: :pending))
       end
 
       context "with pid file" do
         before do
-          any_instance_of(Guard::Rails::Runner, restart: true)
+          allow_any_instance_of(Guard::Rails::Runner).to receive(:restart).and_return(true)
         end
 
         it "restarts and shows the pid file" do
-          mock(Guard::UI).info.with(/#{pid}/)
-          mock(Guard::Notifier).notify.with(/Rails restarted/, hash_including(image: :success))
+          expect(Guard::UI).to receive(:info).with(/#{pid}/)
+          expect(Guard::Notifier).to receive(:notify).with(/Rails restarted/, hash_including(image: :success))
 
           guard.reload
         end
@@ -79,13 +81,13 @@ describe Guard::Rails do
 
       context "without pid file" do
         before do
-          any_instance_of(Guard::Rails::Runner, restart: false)
+          allow_any_instance_of(Guard::Rails::Runner).to receive(:restart).and_return(false)
         end
 
         it "restarts and shows the pid file" do
-          mock(Guard::UI).info.with(/#{pid}/).never
-          mock(Guard::UI).info.with(/Rails NOT restarted/)
-          mock(Guard::Notifier).notify.with(/Rails NOT restarted/, hash_including(image: :failed))
+          expect(Guard::UI).to receive(:info).with(/#{pid}/).never
+          expect(Guard::UI).to receive(:info).with(/Rails NOT restarted/)
+          expect(Guard::Notifier).to receive(:notify).with(/Rails NOT restarted/, hash_including(image: :failed))
 
           guard.reload
         end
@@ -95,14 +97,14 @@ describe Guard::Rails do
 
   describe "#stop" do
     it "stops with correct message" do
-      mock(Guard::Notifier).notify.with('Until next time...', anything)
+      expect(Guard::Notifier).to receive(:notify).with('Until next time...', anything)
       guard.stop
     end
   end
 
   describe '#run_on_change' do
     it "reloads on change" do
-      mock(guard).reload.once
+      expect(guard).to receive(:reload).once
       guard.run_on_change([])
     end
   end

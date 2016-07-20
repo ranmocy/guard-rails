@@ -8,7 +8,3 @@ end
 
 require 'guard/compat/test/helper' # test helper for Guard plugin
 require 'guard/rails'
-
-RSpec.configure do |c|
-  c.mock_with :rr
-end

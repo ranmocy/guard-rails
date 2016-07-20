@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency('guard-compat', '~> 1.0')
 
   s.add_development_dependency 'rspec', '~> 3.0'
-  s.add_development_dependency 'rr', '~> 1.0'
   s.add_development_dependency 'fakefs', '~> 0.5'
   s.add_development_dependency 'version', '>= 1.0.0'
 end
