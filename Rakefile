@@ -21,12 +21,8 @@ end
 
 task :default => 'spec:platforms'
 
-# Add to .git/config:
-# [remote "all"]
-#   url = git@github.com:ranmocy/guard-rails.git
-#   url = git@gitcafe.com:ranmocy/guard-rails.git
 desc 'Push everywhere!'
 task :publish do
-  system %{git push all}
-  system %{git push all --tags}
+  system %{git push}
+  system %{git push --tags}
 end
