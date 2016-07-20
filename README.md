@@ -81,23 +81,24 @@ And I will be there as your call.
 * John Bintz
 * cablegram
 * Joel Moss
-* Paul Schyska
 * Sidney Burks
+* Paul Schyska
 * Adam Michel
 * Adib Saad
 * Cezary Baginski
 * Nathan Broadbent
 * Tim Preston
 * killphi
+* Michael
 * Benjamin Sullivan
-* Darrin Holst
-* Everard Brown
-* Grant Hutchins and Jonathan Mukai-Heidt
 * Johnny Robeson
+* Grant Hutchins and Jonathan Mukai-Heidt
+* Everard Brown
+* Sho Kusano
+* Darrin Holst
 * Leo Lou
 * Luciano Sousa
 * Michel Pavan Macedo
-* Sho Kusano
 
 ## Copyright
 

@@ -26,3 +26,7 @@ task :publish do
   system %{git push}
   system %{git push --tags}
 end
+
+task :contributors do
+    puts `git summary | grep "%" | sed 's/ *[0-9]*\.[0-9]*%//g' | cut -f2 | sed 's/^/* /g'`
+end
