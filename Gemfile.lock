@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    guard-rails (0.7.3)
+    guard-rails (0.8.0)
       guard (~> 2.11)
       guard-compat (~> 1.0)
 
