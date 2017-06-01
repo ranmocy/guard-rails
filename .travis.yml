@@ -5,6 +5,8 @@ rvm:
   - ruby-head
   - jruby
 script: "bundle && bundle exec rake spec"
+after_success:
+  - bundle exec codeclimate-test-reporter
 addons:
   code_climate:
     repo_token: 2188902454f0733604836cd02e84f17634b7a49e337269905e0757051db2e3ca

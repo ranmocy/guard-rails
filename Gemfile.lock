@@ -95,7 +95,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  codeclimate-test-reporter
+  codeclimate-test-reporter (~> 1.0.0)
   fakefs
   guard-bundler
   guard-rails!
@@ -103,6 +103,7 @@ DEPENDENCIES
   libnotify
   rake
   rspec
+  simplecov
   terminal-notifier
   terminal-notifier-guard
   version

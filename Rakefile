@@ -8,7 +8,6 @@ require 'rake/version_task'
 Rake::VersionTask.new
 
 include Rake::DSL if defined?(Rake::DSL)
-RVM_DO_ALL = "rvm all do"
 
 task :default => 'spec'
 

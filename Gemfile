@@ -18,5 +18,7 @@ group :development do
   gem 'libnotify', require: RUBY_PLATFORM.downcase.include?("linux") ? 'libnotify' : nil
 end
 
-# Test Coverage
-gem "codeclimate-test-reporter", group: :test, require: nil
+group :test do
+  gem "simplecov"
+  gem "codeclimate-test-reporter", "~> 1.0.0"
+end
