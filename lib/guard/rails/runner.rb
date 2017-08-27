@@ -191,7 +191,11 @@ module Guard
       end
 
       def zeus_sockfile
-        File.join(@root, '.zeus.sock')
+        unless ENV['ZEUSSOCK'].to_s.empty?
+          ENV['ZEUSSOCK']
+        else
+          File.join(@root, '.zeus.sock')
+        end
       end
 
     end
