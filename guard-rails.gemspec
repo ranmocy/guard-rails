@@ -18,6 +18,6 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.2.3'
 
-  s.add_dependency 'guard', '~> 2.11'
+  s.add_dependency 'guard', '~> 2.14'
   s.add_dependency('guard-compat', '~> 1.0')
 end
